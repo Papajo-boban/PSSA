@@ -1,0 +1,34 @@
+{
+    "Jobs": [
+        {
+            "JobId": 1,
+            "StartTime": 0,
+            "MachineId": 1
+        },
+        {
+            "JobId": 2,
+            "StartTime": 1,
+            "MachineId": 2
+        },
+        {
+            "JobId": 3,
+            "StartTime": 4,
+            "MachineId": 1
+        },
+        {
+            "JobId": 4,
+            "StartTime": 7,
+            "MachineId": 1
+        },
+        {
+            "JobId": 5,
+            "StartTime": 6,
+            "MachineId": 2
+        },
+        {
+            "JobId": 6,
+            "StartTime": 4,
+            "MachineId": 2
+        }
+    ]
+}

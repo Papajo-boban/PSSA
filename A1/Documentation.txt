@@ -1,0 +1,63 @@
+#EVALUATION SETUP#
+
+For solving the PMS instances, I used MiniZinc with the OR-Tools CP-SAT solver. The original instance files were provided in JSON format, so I first converted them into MiniZinc .dzn files using a custom converter (converter.py). The MiniZinc model was then executed through a Python script, which iterated over all converted instances, called MiniZinc, and saved the best available solution in the required JSON format.
+
+The solver was run with 16 threads, matching the number of logical CPU cores available on my machine. For larger instances, I used a relative optimality gap limit of 5%, meaning that the solver could stop early once it proved that the current solution was within 5% of the best possible bound. For 10-job instances, I did not use the gap limit, because these instances were small enough to attempt proving optimality.
+
+The time limits were selected according to instance size:
+
+10-job instances: 20 minutes, no gap limit
+50-job instances: 20 minutes, 5% gap limit
+100-job instances: 2.5 hours, 5% gap limit
+500-job instances: 4 hours, 5% gap limit
+
+#OBSERVED BEHAVIOR & INTERPRETATION#
+
+##Behavior On Small Instances##
+
+The 10-job instances were solved very quickly. These instances were small enough for CP-SAT to find optimal solution almost instantly.
+
+The 50-job instances were more difficult, but still practical. In several cases, CP-SAT was able to find good feasible solutions and either reach the 5% optimality gap or produce satisfactory intermediate solutions within the 20-minute limit. 
+
+##Behavior On 100-Job Instances##
+
+For 100-job instances...#TBA
+
+In one representative 100-job run, after approximately 30 minutes, the best solution had objective value:
+
+best objective = 5,143,946
+best bound     = 4,394,389
+This gives a relative optimality gap of:
+
+(5,143,946 - 4,394,389) / 5,143,946 ≈ 14.57%
+Therefore, the solution was feasible, but still not within the desired 5% bound. To reach a 5% gap, the lower bound would need to increase to approximately:
+
+5,143,946 * 0.95 ≈ 4,886,749
+At the end of the run, the bound was still around 4,394,389, so the solver would have needed an additional improvement in the bound. Based on the bound improvement rate observed in the log, reaching the 5% proof would likely require several more hours.
+
+Behavior On 500-Job Instances
+
+The 500-job instances exceeded the practical capacity of this MiniZinc CP-SAT formulation. In the analyzed 500-job log, the solver did not find any feasible incumbent within 2 hours. The log repeatedly showed:
+
+best: inf
+which means that no feasible solution had been found yet. The solver was still improving bounds and performing search, but it had not produced a valid schedule.
+
+The flattened model was also very large:
+
+Initial model:
+1,490,529 variables
+1,488,526 Boolean variables
+
+After presolve:
+753,324 variables
+752,326 Boolean variables
+This shows that the formulation creates a very large Boolean search space for 500 jobs. Even though CP-SAT performed extensive presolve and bound search, the model remained too large for the solver to find a feasible solution within the given time limit.
+
+
+
+#CONCLUSION#
+Overall, the CP-SAT-based MiniZinc model works well for small and medium-sized instances. It solves 10-job instances easily and produces good results for 50-job instances. For 100-job instances, the method can still find feasible solutions, but proving that they are within 5% of optimality becomes difficult. For 500-job instances, the model becomes too large, and the solver was unable to find even a first feasible solution within 2 hours.
+
+This suggests that the exact CP-SAT formulation is appropriate for small and medium PMS instances, but larger 500-job cases would likely require a different approach, such as a heuristic construction method, decomposition, or a hybrid method that first generates a feasible schedule and then improves it locally.
+
+

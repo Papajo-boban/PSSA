@@ -1,0 +1,211 @@
+{
+  "Machines": [
+    {
+      "Id": 1,
+      "Name": "M1"
+    },
+    {
+      "Id": 2,
+      "Name": "M2"
+    }
+  ],
+  "Jobs": [
+    {
+      "Id": 1,
+      "Name": "J1",
+      "ProcessingTime": 2,
+      "DueTime": 3,
+      "EligibleMachineIds": [
+        1,
+        2
+      ],
+      "RequiredResources": [
+        {
+          "ResourceId": 1,
+          "Capacity": 1
+        }
+      ],
+      "PrecedenceJobIds": [
+      ],
+      "InitialSetupTime": 0,
+      "JobSetupTimes": [
+        0,
+        0,
+        3,
+        0,
+        5,
+        6
+      ]
+    },
+    {
+      "Id": 2,
+      "Name": "J2",
+      "ProcessingTime": 1,
+      "DueTime": 3,
+      "EligibleMachineIds": [
+        1,
+        2
+      ],
+      "RequiredResources": [
+        {
+          "ResourceId": 1,
+          "Capacity": 3
+        }
+      ],
+      "PrecedenceJobIds": [
+      ],
+      "InitialSetupTime": 1,
+      "JobSetupTimes": [
+        1,
+        0,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "Id": 3,
+      "Name": "J3",
+      "ProcessingTime": 1,
+      "DueTime": 5,
+      "EligibleMachineIds": [
+        1
+      ],
+      "RequiredResources": [
+        {
+          "ResourceId": 1,
+          "Capacity": 4
+        },
+        {
+          "ResourceId": 2,
+          "Capacity": 1
+        }
+      ],
+      "PrecedenceJobIds": [
+        1
+      ],
+      "InitialSetupTime": 1,
+      "JobSetupTimes": [
+        2,
+        2,
+        0,
+        2,
+        2,
+        2
+      ]
+    },
+    {
+      "Id": 4,
+      "Name": "J4",
+      "ProcessingTime": 2,
+      "DueTime": 8,
+      "EligibleMachineIds": [
+        1
+      ],
+      "RequiredResources": [
+      ],
+      "PrecedenceJobIds": [
+        6
+      ],
+      "InitialSetupTime": 1,
+      "JobSetupTimes": [
+        2,
+        2,
+        2,
+        0,
+        2,
+        1
+      ]
+    },
+    {
+      "Id": 5,
+      "Name": "J5",
+      "ProcessingTime": 3,
+      "DueTime": 5,
+      "EligibleMachineIds": [
+        2
+      ],
+      "RequiredResources": [
+        {
+          "ResourceId": 2,
+          "Capacity": 1
+        }
+      ],
+      "PrecedenceJobIds": [
+        1
+      ],
+      "InitialSetupTime": 1,
+      "JobSetupTimes": [
+        2,
+        2,
+        2,
+        1,
+        0,
+        1
+      ]
+    },
+    {
+      "Id": 6,
+      "Name": "J6",
+      "ProcessingTime": 1,
+      "DueTime": 5,
+      "EligibleMachineIds": [
+        1,
+        2
+      ],
+      "RequiredResources": [
+      ],
+      "PrecedenceJobIds": [
+      ],
+      "InitialSetupTime": 2,
+      "JobSetupTimes": [
+        2,
+        2,
+        1,
+        3,
+        1,
+        0
+      ]
+    }
+  ],
+  "Resources": [
+    {
+      "Id": 1,
+      "Name": "Resource 1",
+      "AvailabilityPeriods": [
+        {
+          "Start": 0,
+          "End": 5,
+          "Capacity": 4
+        },
+        {
+          "Start": 5,
+          "End": 6,
+          "Capacity": 0
+        },
+        {
+          "Start": 6,
+          "End": 9,
+          "Capacity": 2
+        }
+      ]
+    },
+    {
+      "Id": 2,
+      "Name": "Resource 2",
+      "AvailabilityPeriods": [
+        {
+          "Start": 0,
+          "End": 3,
+          "Capacity": 0
+        },
+        {
+          "Start": 3,
+          "End": 9,
+          "Capacity": 2
+        }
+      ]
+    }
+  ]
+}
