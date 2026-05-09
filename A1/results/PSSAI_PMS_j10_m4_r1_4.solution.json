@@ -3,17 +3,17 @@
         {
             "JobId": 1,
             "StartTime": 23,
-            "MachineId": 1
+            "MachineId": 3
         },
         {
             "JobId": 2,
-            "StartTime": 51,
-            "MachineId": 4
+            "StartTime": 25,
+            "MachineId": 1
         },
         {
             "JobId": 3,
             "StartTime": 29,
-            "MachineId": 3
+            "MachineId": 4
         },
         {
             "JobId": 4,
@@ -22,32 +22,32 @@
         },
         {
             "JobId": 5,
-            "StartTime": 803,
+            "StartTime": 399,
             "MachineId": 2
         },
         {
             "JobId": 6,
-            "StartTime": 5142,
-            "MachineId": 1
+            "StartTime": 5075,
+            "MachineId": 2
         },
         {
             "JobId": 7,
-            "StartTime": 110,
-            "MachineId": 2
-        },
-        {
-            "JobId": 8,
-            "StartTime": 344,
-            "MachineId": 2
-        },
-        {
-            "JobId": 9,
-            "StartTime": 166,
+            "StartTime": 108,
             "MachineId": 3
         },
         {
+            "JobId": 8,
+            "StartTime": 342,
+            "MachineId": 3
+        },
+        {
+            "JobId": 9,
+            "StartTime": 99,
+            "MachineId": 1
+        },
+        {
             "JobId": 10,
-            "StartTime": 2866,
+            "StartTime": 2799,
             "MachineId": 4
         }
     ]
