@@ -1,0 +1,512 @@
+{
+    "Machines": [
+        {
+            "Id": 1,
+            "Name": "M1"
+        },
+        {
+            "Id": 2,
+            "Name": "M2"
+        },
+        {
+            "Id": 3,
+            "Name": "M3"
+        }
+    ],
+    "Jobs": [
+        {
+            "Id": 1,
+            "Name": "J1",
+            "ProcessingTime": 56,
+            "DueTime": 178,
+            "EligibleMachineIds": [
+                1
+            ],
+            "RequiredResources": [
+                {
+                    "ResourceId": 1,
+                    "Capacity": 2
+                },
+                {
+                    "ResourceId": 2,
+                    "Capacity": 4
+                }
+            ],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 19,
+            "JobSetupTimes": [
+                0,
+                77,
+                29,
+                23,
+                227,
+                304,
+                264,
+                109,
+                755,
+                361
+            ]
+        },
+        {
+            "Id": 2,
+            "Name": "J2",
+            "ProcessingTime": 41,
+            "DueTime": 1241,
+            "EligibleMachineIds": [
+                1,
+                2
+            ],
+            "RequiredResources": [
+                {
+                    "ResourceId": 1,
+                    "Capacity": 1
+                },
+                {
+                    "ResourceId": 2,
+                    "Capacity": 2
+                }
+            ],
+            "PrecedenceJobIds": [
+                9
+            ],
+            "InitialSetupTime": 26,
+            "JobSetupTimes": [
+                55,
+                0,
+                51,
+                91,
+                140,
+                320,
+                399,
+                141,
+                2415,
+                555
+            ]
+        },
+        {
+            "Id": 3,
+            "Name": "J3",
+            "ProcessingTime": 47,
+            "DueTime": 68,
+            "EligibleMachineIds": [
+                1,
+                2,
+                3
+            ],
+            "RequiredResources": [
+                {
+                    "ResourceId": 1,
+                    "Capacity": 4
+                },
+                {
+                    "ResourceId": 2,
+                    "Capacity": 4
+                }
+            ],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 15,
+            "JobSetupTimes": [
+                16,
+                49,
+                0,
+                60,
+                279,
+                312,
+                375,
+                287,
+                2490,
+                425
+            ]
+        },
+        {
+            "Id": 4,
+            "Name": "J4",
+            "ProcessingTime": 58,
+            "DueTime": 58,
+            "EligibleMachineIds": [
+                1,
+                2,
+                3
+            ],
+            "RequiredResources": [
+                {
+                    "ResourceId": 1,
+                    "Capacity": 1
+                }
+            ],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 29,
+            "JobSetupTimes": [
+                39,
+                65,
+                111,
+                0,
+                250,
+                310,
+                285,
+                252,
+                2949,
+                296
+            ]
+        },
+        {
+            "Id": 5,
+            "Name": "J5",
+            "ProcessingTime": 171,
+            "DueTime": 1505,
+            "EligibleMachineIds": [
+                1,
+                2,
+                3
+            ],
+            "RequiredResources": [
+                {
+                    "ResourceId": 2,
+                    "Capacity": 4
+                }
+            ],
+            "PrecedenceJobIds": [
+                2
+            ],
+            "InitialSetupTime": 84,
+            "JobSetupTimes": [
+                43,
+                54,
+                100,
+                83,
+                0,
+                96,
+                391,
+                273,
+                2554,
+                377
+            ]
+        },
+        {
+            "Id": 6,
+            "Name": "J6",
+            "ProcessingTime": 228,
+            "DueTime": 2025,
+            "EligibleMachineIds": [
+                1,
+                3
+            ],
+            "RequiredResources": [
+                {
+                    "ResourceId": 2,
+                    "Capacity": 1
+                }
+            ],
+            "PrecedenceJobIds": [
+                4
+            ],
+            "InitialSetupTime": 83,
+            "JobSetupTimes": [
+                59,
+                63,
+                99,
+                49,
+                104,
+                0,
+                293,
+                270,
+                1807,
+                409
+            ]
+        },
+        {
+            "Id": 7,
+            "Name": "J7",
+            "ProcessingTime": 214,
+            "DueTime": 794,
+            "EligibleMachineIds": [
+                1,
+                3
+            ],
+            "RequiredResources": [
+                {
+                    "ResourceId": 2,
+                    "Capacity": 1
+                }
+            ],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 96,
+            "JobSetupTimes": [
+                49,
+                65,
+                91,
+                45,
+                359,
+                341,
+                0,
+                289,
+                1744,
+                449
+            ]
+        },
+        {
+            "Id": 8,
+            "Name": "J8",
+            "ProcessingTime": 215,
+            "DueTime": 575,
+            "EligibleMachineIds": [
+                1,
+                2,
+                3
+            ],
+            "RequiredResources": [
+                {
+                    "ResourceId": 2,
+                    "Capacity": 2
+                }
+            ],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 116,
+            "JobSetupTimes": [
+                37,
+                62,
+                105,
+                61,
+                335,
+                194,
+                308,
+                0,
+                2246,
+                330
+            ]
+        },
+        {
+            "Id": 9,
+            "Name": "J9",
+            "ProcessingTime": 1963,
+            "DueTime": 4841,
+            "EligibleMachineIds": [
+                2,
+                3
+            ],
+            "RequiredResources": [],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 1428,
+            "JobSetupTimes": [
+                16,
+                20,
+                62,
+                89,
+                405,
+                176,
+                206,
+                297,
+                0,
+                146
+            ]
+        },
+        {
+            "Id": 10,
+            "Name": "J10",
+            "ProcessingTime": 867,
+            "DueTime": 1801,
+            "EligibleMachineIds": [
+                1
+            ],
+            "RequiredResources": [
+                {
+                    "ResourceId": 1,
+                    "Capacity": 2
+                }
+            ],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 742,
+            "JobSetupTimes": [
+                55,
+                45,
+                39,
+                26,
+                172,
+                336,
+                228,
+                126,
+                755,
+                0
+            ]
+        }
+    ],
+    "Resources": [
+        {
+            "Id": 1,
+            "Name": "Resource 1",
+            "AvailabilityPeriods": [
+                {
+                    "Start": 0,
+                    "End": 1238,
+                    "Capacity": 8
+                },
+                {
+                    "Start": 1238,
+                    "End": 2476,
+                    "Capacity": 11
+                },
+                {
+                    "Start": 2476,
+                    "End": 3714,
+                    "Capacity": 10
+                },
+                {
+                    "Start": 3714,
+                    "End": 4952,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 4952,
+                    "End": 6190,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 6190,
+                    "End": 7428,
+                    "Capacity": 9
+                },
+                {
+                    "Start": 7428,
+                    "End": 8666,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 8666,
+                    "End": 9904,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 9904,
+                    "End": 11142,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 11142,
+                    "End": 12380,
+                    "Capacity": 8
+                },
+                {
+                    "Start": 12380,
+                    "End": 13618,
+                    "Capacity": 12
+                },
+                {
+                    "Start": 13618,
+                    "End": 14856,
+                    "Capacity": 12
+                },
+                {
+                    "Start": 14856,
+                    "End": 16094,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 16094,
+                    "End": 17332,
+                    "Capacity": 13
+                },
+                {
+                    "Start": 17332,
+                    "End": 18570,
+                    "Capacity": 13
+                },
+                {
+                    "Start": 18570,
+                    "End": 19808,
+                    "Capacity": 14
+                },
+                {
+                    "Start": 19808,
+                    "End": 20000,
+                    "Capacity": 15
+                }
+            ]
+        },
+        {
+            "Id": 2,
+            "Name": "Resource 2",
+            "AvailabilityPeriods": [
+                {
+                    "Start": 0,
+                    "End": 1297,
+                    "Capacity": 11
+                },
+                {
+                    "Start": 1297,
+                    "End": 2594,
+                    "Capacity": 12
+                },
+                {
+                    "Start": 2594,
+                    "End": 3891,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 3891,
+                    "End": 5188,
+                    "Capacity": 15
+                },
+                {
+                    "Start": 5188,
+                    "End": 6485,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 6485,
+                    "End": 7782,
+                    "Capacity": 17
+                },
+                {
+                    "Start": 7782,
+                    "End": 9079,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 9079,
+                    "End": 10376,
+                    "Capacity": 15
+                },
+                {
+                    "Start": 10376,
+                    "End": 11673,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 11673,
+                    "End": 12970,
+                    "Capacity": 18
+                },
+                {
+                    "Start": 12970,
+                    "End": 14267,
+                    "Capacity": 17
+                },
+                {
+                    "Start": 14267,
+                    "End": 15564,
+                    "Capacity": 19
+                },
+                {
+                    "Start": 15564,
+                    "End": 16861,
+                    "Capacity": 18
+                },
+                {
+                    "Start": 16861,
+                    "End": 18158,
+                    "Capacity": 18
+                },
+                {
+                    "Start": 18158,
+                    "End": 19455,
+                    "Capacity": 19
+                },
+                {
+                    "Start": 19455,
+                    "End": 20000,
+                    "Capacity": 21
+                }
+            ]
+        }
+    ]
+}

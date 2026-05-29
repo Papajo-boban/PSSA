@@ -1,0 +1,4798 @@
+{
+    "Machines": [
+        {
+            "Id": 1,
+            "Name": "M1"
+        },
+        {
+            "Id": 2,
+            "Name": "M2"
+        },
+        {
+            "Id": 3,
+            "Name": "M3"
+        },
+        {
+            "Id": 4,
+            "Name": "M4"
+        },
+        {
+            "Id": 5,
+            "Name": "M5"
+        }
+    ],
+    "Jobs": [
+        {
+            "Id": 1,
+            "Name": "J1",
+            "ProcessingTime": 53,
+            "DueTime": 29,
+            "EligibleMachineIds": [
+                1,
+                2,
+                3,
+                4,
+                5
+            ],
+            "RequiredResources": [
+                {
+                    "ResourceId": 1,
+                    "Capacity": 2
+                }
+            ],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 18,
+            "JobSetupTimes": [
+                0,
+                48,
+                56,
+                74,
+                91,
+                81,
+                6,
+                52,
+                91,
+                60,
+                96,
+                84,
+                71,
+                97,
+                69,
+                42,
+                14,
+                22,
+                84,
+                45,
+                305,
+                151,
+                269,
+                245,
+                55,
+                250,
+                315,
+                444,
+                437,
+                226,
+                222,
+                191,
+                351,
+                279,
+                377,
+                291,
+                316,
+                278,
+                31,
+                112,
+                2690,
+                3450,
+                4122,
+                4236,
+                2918,
+                3028,
+                2572,
+                2024,
+                3909,
+                428
+            ]
+        },
+        {
+            "Id": 2,
+            "Name": "J2",
+            "ProcessingTime": 48,
+            "DueTime": 9251,
+            "EligibleMachineIds": [
+                2
+            ],
+            "RequiredResources": [],
+            "PrecedenceJobIds": [
+                46,
+                47
+            ],
+            "InitialSetupTime": 9,
+            "JobSetupTimes": [
+                28,
+                0,
+                16,
+                28,
+                77,
+                31,
+                3,
+                23,
+                99,
+                60,
+                61,
+                27,
+                22,
+                28,
+                65,
+                19,
+                7,
+                83,
+                26,
+                22,
+                301,
+                187,
+                79,
+                79,
+                55,
+                119,
+                83,
+                135,
+                113,
+                178,
+                93,
+                95,
+                148,
+                106,
+                119,
+                157,
+                101,
+                93,
+                100,
+                55,
+                1292,
+                3878,
+                2162,
+                1343,
+                2072,
+                1200,
+                1739,
+                799,
+                2341,
+                205
+            ]
+        },
+        {
+            "Id": 3,
+            "Name": "J3",
+            "ProcessingTime": 15,
+            "DueTime": 37,
+            "EligibleMachineIds": [
+                1
+            ],
+            "RequiredResources": [
+                {
+                    "ResourceId": 1,
+                    "Capacity": 2
+                },
+                {
+                    "ResourceId": 2,
+                    "Capacity": 2
+                },
+                {
+                    "ResourceId": 3,
+                    "Capacity": 3
+                },
+                {
+                    "ResourceId": 5,
+                    "Capacity": 4
+                },
+                {
+                    "ResourceId": 6,
+                    "Capacity": 1
+                },
+                {
+                    "ResourceId": 7,
+                    "Capacity": 3
+                },
+                {
+                    "ResourceId": 8,
+                    "Capacity": 2
+                }
+            ],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 10,
+            "JobSetupTimes": [
+                90,
+                24,
+                0,
+                28,
+                44,
+                82,
+                3,
+                36,
+                27,
+                50,
+                70,
+                92,
+                65,
+                62,
+                24,
+                17,
+                7,
+                48,
+                59,
+                22,
+                119,
+                57,
+                160,
+                79,
+                55,
+                119,
+                83,
+                305,
+                113,
+                86,
+                93,
+                95,
+                287,
+                169,
+                136,
+                110,
+                365,
+                187,
+                31,
+                55,
+                1292,
+                1309,
+                2999,
+                2963,
+                1010,
+                1200,
+                905,
+                943,
+                1416,
+                205
+            ]
+        },
+        {
+            "Id": 4,
+            "Name": "J4",
+            "ProcessingTime": 27,
+            "DueTime": 7308,
+            "EligibleMachineIds": [
+                2,
+                3,
+                4
+            ],
+            "RequiredResources": [],
+            "PrecedenceJobIds": [
+                16
+            ],
+            "InitialSetupTime": 16,
+            "JobSetupTimes": [
+                40,
+                82,
+                16,
+                0,
+                57,
+                101,
+                3,
+                52,
+                102,
+                59,
+                99,
+                27,
+                35,
+                28,
+                88,
+                35,
+                7,
+                86,
+                77,
+                72,
+                306,
+                163,
+                95,
+                79,
+                160,
+                119,
+                83,
+                352,
+                375,
+                282,
+                349,
+                361,
+                327,
+                164,
+                354,
+                372,
+                185,
+                173,
+                86,
+                137,
+                4651,
+                1309,
+                1309,
+                1343,
+                2594,
+                2664,
+                1566,
+                3101,
+                2348,
+                741
+            ]
+        },
+        {
+            "Id": 5,
+            "Name": "J5",
+            "ProcessingTime": 53,
+            "DueTime": 19,
+            "EligibleMachineIds": [
+                1,
+                2
+            ],
+            "RequiredResources": [
+                {
+                    "ResourceId": 1,
+                    "Capacity": 1
+                },
+                {
+                    "ResourceId": 2,
+                    "Capacity": 2
+                },
+                {
+                    "ResourceId": 3,
+                    "Capacity": 3
+                },
+                {
+                    "ResourceId": 5,
+                    "Capacity": 3
+                },
+                {
+                    "ResourceId": 6,
+                    "Capacity": 3
+                },
+                {
+                    "ResourceId": 8,
+                    "Capacity": 4
+                }
+            ],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 27,
+            "JobSetupTimes": [
+                81,
+                52,
+                42,
+                28,
+                0,
+                60,
+                3,
+                41,
+                89,
+                57,
+                69,
+                89,
+                38,
+                72,
+                50,
+                26,
+                7,
+                77,
+                64,
+                22,
+                196,
+                57,
+                235,
+                79,
+                55,
+                119,
+                83,
+                200,
+                113,
+                170,
+                93,
+                95,
+                353,
+                189,
+                150,
+                193,
+                387,
+                297,
+                111,
+                55,
+                1292,
+                3035,
+                2837,
+                4599,
+                3812,
+                1200,
+                2323,
+                1079,
+                2294,
+                205
+            ]
+        },
+        {
+            "Id": 6,
+            "Name": "J6",
+            "ProcessingTime": 48,
+            "DueTime": 78,
+            "EligibleMachineIds": [
+                1,
+                2,
+                3,
+                4,
+                5
+            ],
+            "RequiredResources": [
+                {
+                    "ResourceId": 1,
+                    "Capacity": 3
+                },
+                {
+                    "ResourceId": 2,
+                    "Capacity": 2
+                },
+                {
+                    "ResourceId": 3,
+                    "Capacity": 4
+                },
+                {
+                    "ResourceId": 4,
+                    "Capacity": 4
+                },
+                {
+                    "ResourceId": 5,
+                    "Capacity": 1
+                },
+                {
+                    "ResourceId": 6,
+                    "Capacity": 1
+                },
+                {
+                    "ResourceId": 7,
+                    "Capacity": 2
+                },
+                {
+                    "ResourceId": 8,
+                    "Capacity": 3
+                }
+            ],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 20,
+            "JobSetupTimes": [
+                103,
+                89,
+                41,
+                87,
+                86,
+                0,
+                6,
+                73,
+                94,
+                24,
+                105,
+                59,
+                54,
+                85,
+                51,
+                35,
+                14,
+                70,
+                91,
+                69,
+                404,
+                150,
+                288,
+                207,
+                126,
+                432,
+                183,
+                407,
+                354,
+                217,
+                368,
+                318,
+                400,
+                265,
+                325,
+                310,
+                226,
+                257,
+                77,
+                126,
+                3155,
+                4233,
+                3764,
+                4948,
+                3846,
+                4466,
+                3116,
+                2567,
+                5164,
+                687
+            ]
+        },
+        {
+            "Id": 7,
+            "Name": "J7",
+            "ProcessingTime": 34,
+            "DueTime": 7711,
+            "EligibleMachineIds": [
+                5
+            ],
+            "RequiredResources": [],
+            "PrecedenceJobIds": [
+                8
+            ],
+            "InitialSetupTime": 4,
+            "JobSetupTimes": [
+                58,
+                24,
+                16,
+                28,
+                25,
+                37,
+                0,
+                34,
+                27,
+                24,
+                29,
+                27,
+                19,
+                97,
+                24,
+                17,
+                18,
+                22,
+                26,
+                22,
+                260,
+                57,
+                87,
+                193,
+                107,
+                341,
+                274,
+                335,
+                113,
+                254,
+                93,
+                95,
+                144,
+                217,
+                211,
+                156,
+                101,
+                93,
+                31,
+                55,
+                1292,
+                1309,
+                1309,
+                4437,
+                2695,
+                1200,
+                1948,
+                799,
+                3931,
+                205
+            ]
+        },
+        {
+            "Id": 8,
+            "Name": "J8",
+            "ProcessingTime": 49,
+            "DueTime": 5485,
+            "EligibleMachineIds": [
+                1,
+                2,
+                3,
+                4,
+                5
+            ],
+            "RequiredResources": [
+                {
+                    "ResourceId": 2,
+                    "Capacity": 3
+                },
+                {
+                    "ResourceId": 5,
+                    "Capacity": 3
+                }
+            ],
+            "PrecedenceJobIds": [
+                25,
+                28
+            ],
+            "InitialSetupTime": 23,
+            "JobSetupTimes": [
+                90,
+                66,
+                51,
+                76,
+                97,
+                82,
+                10,
+                0,
+                55,
+                62,
+                92,
+                56,
+                38,
+                92,
+                83,
+                49,
+                16,
+                60,
+                69,
+                44,
+                267,
+                116,
+                292,
+                224,
+                172,
+                274,
+                246,
+                444,
+                286,
+                187,
+                295,
+                215,
+                298,
+                225,
+                388,
+                246,
+                274,
+                349,
+                89,
+                113,
+                3009,
+                3921,
+                4302,
+                4855,
+                2390,
+                3241,
+                2925,
+                799,
+                4894,
+                741
+            ]
+        },
+        {
+            "Id": 9,
+            "Name": "J9",
+            "ProcessingTime": 9,
+            "DueTime": 8610,
+            "EligibleMachineIds": [
+                2
+            ],
+            "RequiredResources": [],
+            "PrecedenceJobIds": [
+                2
+            ],
+            "InitialSetupTime": 17,
+            "JobSetupTimes": [
+                28,
+                68,
+                16,
+                28,
+                81,
+                44,
+                3,
+                23,
+                0,
+                78,
+                29,
+                27,
+                19,
+                28,
+                78,
+                25,
+                7,
+                50,
+                26,
+                22,
+                119,
+                146,
+                79,
+                79,
+                55,
+                119,
+                83,
+                116,
+                113,
+                130,
+                93,
+                95,
+                196,
+                106,
+                119,
+                128,
+                101,
+                93,
+                71,
+                55,
+                1292,
+                2567,
+                1351,
+                1343,
+                1941,
+                1200,
+                2146,
+                799,
+                2765,
+                205
+            ]
+        },
+        {
+            "Id": 10,
+            "Name": "J10",
+            "ProcessingTime": 50,
+            "DueTime": 56,
+            "EligibleMachineIds": [
+                1,
+                2,
+                3,
+                4
+            ],
+            "RequiredResources": [
+                {
+                    "ResourceId": 1,
+                    "Capacity": 2
+                },
+                {
+                    "ResourceId": 2,
+                    "Capacity": 1
+                },
+                {
+                    "ResourceId": 3,
+                    "Capacity": 4
+                },
+                {
+                    "ResourceId": 4,
+                    "Capacity": 3
+                },
+                {
+                    "ResourceId": 5,
+                    "Capacity": 2
+                },
+                {
+                    "ResourceId": 6,
+                    "Capacity": 2
+                },
+                {
+                    "ResourceId": 7,
+                    "Capacity": 2
+                },
+                {
+                    "ResourceId": 8,
+                    "Capacity": 3
+                }
+            ],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 18,
+            "JobSetupTimes": [
+                106,
+                93,
+                57,
+                59,
+                50,
+                27,
+                3,
+                79,
+                56,
+                0,
+                99,
+                100,
+                57,
+                73,
+                52,
+                67,
+                7,
+                68,
+                99,
+                79,
+                399,
+                120,
+                211,
+                174,
+                177,
+                119,
+                83,
+                303,
+                417,
+                251,
+                287,
+                362,
+                398,
+                209,
+                405,
+                357,
+                309,
+                187,
+                80,
+                145,
+                3545,
+                4218,
+                4335,
+                3380,
+                3245,
+                3819,
+                2498,
+                3026,
+                1556,
+                699
+            ]
+        },
+        {
+            "Id": 11,
+            "Name": "J11",
+            "ProcessingTime": 45,
+            "DueTime": 43,
+            "EligibleMachineIds": [
+                1,
+                2,
+                4,
+                5
+            ],
+            "RequiredResources": [
+                {
+                    "ResourceId": 1,
+                    "Capacity": 3
+                },
+                {
+                    "ResourceId": 2,
+                    "Capacity": 4
+                },
+                {
+                    "ResourceId": 3,
+                    "Capacity": 4
+                },
+                {
+                    "ResourceId": 4,
+                    "Capacity": 2
+                },
+                {
+                    "ResourceId": 5,
+                    "Capacity": 3
+                },
+                {
+                    "ResourceId": 6,
+                    "Capacity": 4
+                }
+            ],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 24,
+            "JobSetupTimes": [
+                56,
+                86,
+                32,
+                50,
+                89,
+                103,
+                11,
+                88,
+                27,
+                68,
+                0,
+                70,
+                45,
+                65,
+                89,
+                43,
+                25,
+                57,
+                26,
+                85,
+                119,
+                120,
+                79,
+                201,
+                87,
+                435,
+                251,
+                339,
+                328,
+                230,
+                93,
+                95,
+                389,
+                106,
+                459,
+                155,
+                247,
+                294,
+                98,
+                55,
+                4370,
+                4153,
+                4038,
+                4709,
+                3457,
+                3458,
+                2517,
+                2262,
+                2978,
+                205
+            ]
+        },
+        {
+            "Id": 12,
+            "Name": "J12",
+            "ProcessingTime": 16,
+            "DueTime": 129,
+            "EligibleMachineIds": [
+                1,
+                5
+            ],
+            "RequiredResources": [
+                {
+                    "ResourceId": 4,
+                    "Capacity": 2
+                },
+                {
+                    "ResourceId": 6,
+                    "Capacity": 2
+                }
+            ],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 28,
+            "JobSetupTimes": [
+                98,
+                24,
+                40,
+                28,
+                44,
+                62,
+                8,
+                45,
+                27,
+                46,
+                91,
+                0,
+                64,
+                28,
+                24,
+                17,
+                17,
+                78,
+                75,
+                22,
+                229,
+                57,
+                266,
+                305,
+                106,
+                418,
+                83,
+                322,
+                113,
+                339,
+                93,
+                95,
+                419,
+                265,
+                119,
+                154,
+                392,
+                225,
+                31,
+                55,
+                1292,
+                1309,
+                3435,
+                4187,
+                3222,
+                1200,
+                3564,
+                799,
+                3893,
+                205
+            ]
+        },
+        {
+            "Id": 13,
+            "Name": "J13",
+            "ProcessingTime": 49,
+            "DueTime": 78,
+            "EligibleMachineIds": [
+                1,
+                2,
+                3,
+                5
+            ],
+            "RequiredResources": [
+                {
+                    "ResourceId": 1,
+                    "Capacity": 2
+                },
+                {
+                    "ResourceId": 3,
+                    "Capacity": 1
+                },
+                {
+                    "ResourceId": 6,
+                    "Capacity": 4
+                },
+                {
+                    "ResourceId": 8,
+                    "Capacity": 1
+                }
+            ],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 27,
+            "JobSetupTimes": [
+                108,
+                52,
+                48,
+                105,
+                77,
+                94,
+                9,
+                55,
+                85,
+                73,
+                98,
+                103,
+                0,
+                85,
+                91,
+                28,
+                19,
+                86,
+                81,
+                22,
+                420,
+                129,
+                214,
+                259,
+                191,
+                242,
+                202,
+                393,
+                113,
+                304,
+                319,
+                301,
+                424,
+                269,
+                383,
+                336,
+                307,
+                368,
+                98,
+                128,
+                1292,
+                2724,
+                3205,
+                3761,
+                3247,
+                1200,
+                2491,
+                1664,
+                5580,
+                205
+            ]
+        },
+        {
+            "Id": 14,
+            "Name": "J14",
+            "ProcessingTime": 54,
+            "DueTime": 245,
+            "EligibleMachineIds": [
+                1,
+                5
+            ],
+            "RequiredResources": [
+                {
+                    "ResourceId": 4,
+                    "Capacity": 2
+                },
+                {
+                    "ResourceId": 6,
+                    "Capacity": 3
+                }
+            ],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 29,
+            "JobSetupTimes": [
+                101,
+                24,
+                53,
+                28,
+                25,
+                60,
+                8,
+                56,
+                27,
+                35,
+                77,
+                27,
+                53,
+                0,
+                24,
+                17,
+                27,
+                75,
+                55,
+                22,
+                218,
+                57,
+                161,
+                303,
+                78,
+                303,
+                83,
+                311,
+                113,
+                286,
+                93,
+                95,
+                290,
+                283,
+                119,
+                119,
+                215,
+                273,
+                31,
+                55,
+                1292,
+                1309,
+                4711,
+                4519,
+                3039,
+                1200,
+                3254,
+                799,
+                5287,
+                205
+            ]
+        },
+        {
+            "Id": 15,
+            "Name": "J15",
+            "ProcessingTime": 32,
+            "DueTime": 210,
+            "EligibleMachineIds": [
+                1,
+                2,
+                4
+            ],
+            "RequiredResources": [
+                {
+                    "ResourceId": 2,
+                    "Capacity": 4
+                },
+                {
+                    "ResourceId": 4,
+                    "Capacity": 2
+                },
+                {
+                    "ResourceId": 5,
+                    "Capacity": 2
+                },
+                {
+                    "ResourceId": 6,
+                    "Capacity": 2
+                },
+                {
+                    "ResourceId": 7,
+                    "Capacity": 3
+                }
+            ],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 16,
+            "JobSetupTimes": [
+                83,
+                69,
+                42,
+                30,
+                87,
+                89,
+                3,
+                83,
+                82,
+                85,
+                113,
+                89,
+                71,
+                106,
+                0,
+                53,
+                7,
+                78,
+                84,
+                87,
+                238,
+                201,
+                158,
+                79,
+                55,
+                119,
+                83,
+                336,
+                261,
+                210,
+                93,
+                95,
+                274,
+                177,
+                353,
+                219,
+                293,
+                93,
+                77,
+                55,
+                2965,
+                3099,
+                4050,
+                2601,
+                3792,
+                4547,
+                2648,
+                2826,
+                2769,
+                205
+            ]
+        },
+        {
+            "Id": 16,
+            "Name": "J16",
+            "ProcessingTime": 31,
+            "DueTime": 62,
+            "EligibleMachineIds": [
+                2,
+                4
+            ],
+            "RequiredResources": [],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 11,
+            "JobSetupTimes": [
+                40,
+                83,
+                16,
+                43,
+                93,
+                87,
+                3,
+                84,
+                94,
+                78,
+                69,
+                27,
+                31,
+                28,
+                70,
+                0,
+                7,
+                73,
+                92,
+                83,
+                205,
+                147,
+                115,
+                79,
+                55,
+                119,
+                83,
+                224,
+                228,
+                112,
+                93,
+                95,
+                193,
+                251,
+                330,
+                267,
+                143,
+                93,
+                63,
+                55,
+                3447,
+                3227,
+                1402,
+                1343,
+                1010,
+                4079,
+                2385,
+                2750,
+                1937,
+                205
+            ]
+        },
+        {
+            "Id": 17,
+            "Name": "J17",
+            "ProcessingTime": 56,
+            "DueTime": 521,
+            "EligibleMachineIds": [
+                5
+            ],
+            "RequiredResources": [],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 21,
+            "JobSetupTimes": [
+                53,
+                24,
+                16,
+                28,
+                25,
+                31,
+                9,
+                30,
+                27,
+                24,
+                29,
+                27,
+                19,
+                71,
+                24,
+                17,
+                0,
+                22,
+                26,
+                22,
+                204,
+                57,
+                121,
+                221,
+                139,
+                260,
+                290,
+                449,
+                113,
+                177,
+                93,
+                95,
+                203,
+                397,
+                354,
+                113,
+                101,
+                93,
+                31,
+                55,
+                1292,
+                1309,
+                1309,
+                1343,
+                2194,
+                1200,
+                2683,
+                799,
+                3178,
+                205
+            ]
+        },
+        {
+            "Id": 18,
+            "Name": "J18",
+            "ProcessingTime": 59,
+            "DueTime": 226,
+            "EligibleMachineIds": [
+                1,
+                2,
+                4
+            ],
+            "RequiredResources": [
+                {
+                    "ResourceId": 1,
+                    "Capacity": 4
+                }
+            ],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 13,
+            "JobSetupTimes": [
+                28,
+                65,
+                54,
+                53,
+                66,
+                79,
+                3,
+                82,
+                81,
+                71,
+                92,
+                56,
+                53,
+                89,
+                70,
+                63,
+                7,
+                0,
+                87,
+                80,
+                321,
+                209,
+                237,
+                79,
+                55,
+                119,
+                83,
+                238,
+                381,
+                114,
+                93,
+                95,
+                405,
+                179,
+                468,
+                218,
+                278,
+                287,
+                31,
+                55,
+                3305,
+                5112,
+                4589,
+                3564,
+                2541,
+                3652,
+                2652,
+                2102,
+                1995,
+                205
+            ]
+        },
+        {
+            "Id": 19,
+            "Name": "J19",
+            "ProcessingTime": 53,
+            "DueTime": 7033,
+            "EligibleMachineIds": [
+                1,
+                2,
+                3,
+                4
+            ],
+            "RequiredResources": [
+                {
+                    "ResourceId": 1,
+                    "Capacity": 3
+                },
+                {
+                    "ResourceId": 2,
+                    "Capacity": 3
+                },
+                {
+                    "ResourceId": 3,
+                    "Capacity": 2
+                },
+                {
+                    "ResourceId": 4,
+                    "Capacity": 2
+                },
+                {
+                    "ResourceId": 5,
+                    "Capacity": 4
+                },
+                {
+                    "ResourceId": 6,
+                    "Capacity": 2
+                }
+            ],
+            "PrecedenceJobIds": [
+                16
+            ],
+            "InitialSetupTime": 29,
+            "JobSetupTimes": [
+                77,
+                51,
+                56,
+                109,
+                96,
+                95,
+                3,
+                71,
+                27,
+                59,
+                29,
+                65,
+                56,
+                77,
+                92,
+                43,
+                7,
+                76,
+                0,
+                69,
+                119,
+                204,
+                79,
+                277,
+                143,
+                119,
+                83,
+                318,
+                406,
+                164,
+                93,
+                363,
+                328,
+                106,
+                360,
+                394,
+                388,
+                252,
+                65,
+                147,
+                5159,
+                3778,
+                3663,
+                3950,
+                3209,
+                3578,
+                2512,
+                2380,
+                2441,
+                535
+            ]
+        },
+        {
+            "Id": 20,
+            "Name": "J20",
+            "ProcessingTime": 44,
+            "DueTime": 10977,
+            "EligibleMachineIds": [
+                4,
+                5
+            ],
+            "RequiredResources": [],
+            "PrecedenceJobIds": [
+                16
+            ],
+            "InitialSetupTime": 27,
+            "JobSetupTimes": [
+                68,
+                24,
+                16,
+                41,
+                25,
+                74,
+                8,
+                89,
+                27,
+                47,
+                29,
+                27,
+                19,
+                72,
+                24,
+                39,
+                22,
+                28,
+                101,
+                0,
+                231,
+                57,
+                123,
+                184,
+                99,
+                321,
+                236,
+                116,
+                389,
+                86,
+                93,
+                95,
+                180,
+                317,
+                450,
+                233,
+                219,
+                93,
+                31,
+                55,
+                2591,
+                3233,
+                1309,
+                4557,
+                3823,
+                2582,
+                905,
+                2069,
+                3712,
+                205
+            ]
+        },
+        {
+            "Id": 21,
+            "Name": "J21",
+            "ProcessingTime": 218,
+            "DueTime": 960,
+            "EligibleMachineIds": [
+                2,
+                3,
+                5
+            ],
+            "RequiredResources": [],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 94,
+            "JobSetupTimes": [
+                66,
+                84,
+                16,
+                86,
+                74,
+                85,
+                7,
+                50,
+                27,
+                66,
+                29,
+                27,
+                19,
+                61,
+                79,
+                26,
+                19,
+                47,
+                26,
+                22,
+                0,
+                150,
+                79,
+                265,
+                126,
+                464,
+                188,
+                267,
+                113,
+                174,
+                93,
+                293,
+                265,
+                106,
+                380,
+                299,
+                101,
+                273,
+                62,
+                141,
+                1292,
+                2256,
+                2097,
+                4607,
+                3301,
+                1200,
+                2640,
+                2216,
+                4429,
+                719
+            ]
+        },
+        {
+            "Id": 22,
+            "Name": "J22",
+            "ProcessingTime": 138,
+            "DueTime": 313,
+            "EligibleMachineIds": [
+                2
+            ],
+            "RequiredResources": [],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 45,
+            "JobSetupTimes": [
+                28,
+                53,
+                16,
+                28,
+                25,
+                50,
+                3,
+                23,
+                102,
+                61,
+                90,
+                27,
+                35,
+                28,
+                86,
+                19,
+                7,
+                57,
+                26,
+                22,
+                317,
+                0,
+                86,
+                79,
+                55,
+                119,
+                83,
+                163,
+                113,
+                178,
+                93,
+                95,
+                254,
+                106,
+                119,
+                115,
+                101,
+                93,
+                64,
+                55,
+                1292,
+                2470,
+                1614,
+                1343,
+                1717,
+                1200,
+                2319,
+                799,
+                2568,
+                205
+            ]
+        },
+        {
+            "Id": 23,
+            "Name": "J23",
+            "ProcessingTime": 155,
+            "DueTime": 1028,
+            "EligibleMachineIds": [
+                1,
+                2,
+                3,
+                5
+            ],
+            "RequiredResources": [
+                {
+                    "ResourceId": 1,
+                    "Capacity": 2
+                },
+                {
+                    "ResourceId": 2,
+                    "Capacity": 4
+                },
+                {
+                    "ResourceId": 3,
+                    "Capacity": 3
+                },
+                {
+                    "ResourceId": 4,
+                    "Capacity": 3
+                },
+                {
+                    "ResourceId": 5,
+                    "Capacity": 1
+                },
+                {
+                    "ResourceId": 6,
+                    "Capacity": 1
+                }
+            ],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 113,
+            "JobSetupTimes": [
+                86,
+                53,
+                40,
+                97,
+                76,
+                73,
+                9,
+                55,
+                27,
+                91,
+                29,
+                57,
+                56,
+                97,
+                70,
+                22,
+                15,
+                73,
+                26,
+                22,
+                119,
+                120,
+                0,
+                312,
+                217,
+                409,
+                275,
+                317,
+                113,
+                279,
+                93,
+                254,
+                381,
+                106,
+                296,
+                339,
+                306,
+                327,
+                88,
+                148,
+                1292,
+                2787,
+                3991,
+                4357,
+                3678,
+                1200,
+                2540,
+                2729,
+                5216,
+                630
+            ]
+        },
+        {
+            "Id": 24,
+            "Name": "J24",
+            "ProcessingTime": 220,
+            "DueTime": 9703,
+            "EligibleMachineIds": [
+                3,
+                5
+            ],
+            "RequiredResources": [],
+            "PrecedenceJobIds": [
+                40
+            ],
+            "InitialSetupTime": 78,
+            "JobSetupTimes": [
+                49,
+                24,
+                16,
+                28,
+                25,
+                76,
+                7,
+                52,
+                27,
+                37,
+                29,
+                27,
+                19,
+                77,
+                24,
+                17,
+                17,
+                22,
+                26,
+                22,
+                285,
+                57,
+                160,
+                0,
+                208,
+                310,
+                209,
+                397,
+                113,
+                218,
+                351,
+                208,
+                308,
+                359,
+                282,
+                335,
+                101,
+                217,
+                31,
+                164,
+                1292,
+                1309,
+                1309,
+                2925,
+                2913,
+                1200,
+                3264,
+                1554,
+                4379,
+                575
+            ]
+        },
+        {
+            "Id": 25,
+            "Name": "J25",
+            "ProcessingTime": 153,
+            "DueTime": 1030,
+            "EligibleMachineIds": [
+                3,
+                5
+            ],
+            "RequiredResources": [],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 101,
+            "JobSetupTimes": [
+                28,
+                24,
+                16,
+                84,
+                25,
+                82,
+                8,
+                54,
+                27,
+                40,
+                29,
+                27,
+                19,
+                96,
+                24,
+                17,
+                15,
+                22,
+                26,
+                22,
+                472,
+                57,
+                126,
+                308,
+                0,
+                455,
+                273,
+                404,
+                113,
+                308,
+                348,
+                313,
+                402,
+                391,
+                255,
+                361,
+                101,
+                182,
+                31,
+                201,
+                1292,
+                1309,
+                1309,
+                4031,
+                2330,
+                1200,
+                3184,
+                2126,
+                4464,
+                459
+            ]
+        },
+        {
+            "Id": 26,
+            "Name": "J26",
+            "ProcessingTime": 115,
+            "DueTime": 1167,
+            "EligibleMachineIds": [
+                5
+            ],
+            "RequiredResources": [],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 81,
+            "JobSetupTimes": [
+                71,
+                24,
+                16,
+                28,
+                25,
+                38,
+                11,
+                31,
+                27,
+                24,
+                29,
+                27,
+                19,
+                86,
+                24,
+                17,
+                21,
+                22,
+                26,
+                22,
+                285,
+                57,
+                124,
+                300,
+                99,
+                0,
+                269,
+                356,
+                113,
+                323,
+                93,
+                95,
+                184,
+                324,
+                371,
+                127,
+                101,
+                93,
+                31,
+                55,
+                1292,
+                1309,
+                1309,
+                5022,
+                2079,
+                1200,
+                2366,
+                799,
+                3235,
+                205
+            ]
+        },
+        {
+            "Id": 27,
+            "Name": "J27",
+            "ProcessingTime": 186,
+            "DueTime": 2495,
+            "EligibleMachineIds": [
+                5
+            ],
+            "RequiredResources": [],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 39,
+            "JobSetupTimes": [
+                86,
+                24,
+                16,
+                28,
+                25,
+                30,
+                9,
+                36,
+                27,
+                24,
+                29,
+                27,
+                19,
+                28,
+                24,
+                17,
+                20,
+                22,
+                26,
+                22,
+                272,
+                57,
+                135,
+                165,
+                105,
+                317,
+                0,
+                248,
+                113,
+                266,
+                93,
+                95,
+                162,
+                336,
+                119,
+                118,
+                101,
+                93,
+                31,
+                55,
+                1292,
+                1309,
+                1309,
+                4350,
+                2424,
+                1200,
+                1813,
+                799,
+                3923,
+                205
+            ]
+        },
+        {
+            "Id": 28,
+            "Name": "J28",
+            "ProcessingTime": 231,
+            "DueTime": 493,
+            "EligibleMachineIds": [
+                1,
+                2,
+                3,
+                4,
+                5
+            ],
+            "RequiredResources": [
+                {
+                    "ResourceId": 3,
+                    "Capacity": 1
+                },
+                {
+                    "ResourceId": 5,
+                    "Capacity": 2
+                },
+                {
+                    "ResourceId": 6,
+                    "Capacity": 1
+                }
+            ],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 107,
+            "JobSetupTimes": [
+                93,
+                62,
+                47,
+                59,
+                66,
+                73,
+                10,
+                71,
+                82,
+                70,
+                84,
+                75,
+                60,
+                74,
+                91,
+                57,
+                25,
+                65,
+                65,
+                22,
+                343,
+                212,
+                240,
+                240,
+                211,
+                367,
+                219,
+                0,
+                433,
+                86,
+                317,
+                208,
+                322,
+                412,
+                373,
+                278,
+                262,
+                263,
+                86,
+                144,
+                4911,
+                4321,
+                3664,
+                3734,
+                3738,
+                3466,
+                905,
+                2251,
+                4120,
+                503
+            ]
+        },
+        {
+            "Id": 29,
+            "Name": "J29",
+            "ProcessingTime": 179,
+            "DueTime": 1389,
+            "EligibleMachineIds": [
+                4
+            ],
+            "RequiredResources": [],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 49,
+            "JobSetupTimes": [
+                49,
+                24,
+                16,
+                54,
+                25,
+                88,
+                3,
+                70,
+                27,
+                43,
+                36,
+                27,
+                19,
+                28,
+                38,
+                34,
+                7,
+                30,
+                56,
+                82,
+                119,
+                57,
+                79,
+                79,
+                55,
+                119,
+                83,
+                178,
+                0,
+                86,
+                93,
+                95,
+                115,
+                254,
+                359,
+                235,
+                201,
+                93,
+                31,
+                55,
+                4806,
+                4582,
+                1309,
+                1343,
+                1500,
+                4214,
+                905,
+                2607,
+                1416,
+                205
+            ]
+        },
+        {
+            "Id": 30,
+            "Name": "J30",
+            "ProcessingTime": 108,
+            "DueTime": 126,
+            "EligibleMachineIds": [
+                2,
+                3,
+                5
+            ],
+            "RequiredResources": [],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 112,
+            "JobSetupTimes": [
+                70,
+                84,
+                16,
+                75,
+                90,
+                69,
+                10,
+                38,
+                101,
+                64,
+                91,
+                27,
+                32,
+                100,
+                80,
+                27,
+                14,
+                50,
+                26,
+                22,
+                323,
+                138,
+                143,
+                237,
+                166,
+                425,
+                315,
+                116,
+                113,
+                0,
+                222,
+                363,
+                340,
+                354,
+                288,
+                353,
+                101,
+                211,
+                83,
+                146,
+                1292,
+                3846,
+                1955,
+                4697,
+                3768,
+                1200,
+                905,
+                2092,
+                3054,
+                540
+            ]
+        },
+        {
+            "Id": 31,
+            "Name": "J31",
+            "ProcessingTime": 187,
+            "DueTime": 1649,
+            "EligibleMachineIds": [
+                3
+            ],
+            "RequiredResources": [],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 41,
+            "JobSetupTimes": [
+                28,
+                24,
+                16,
+                103,
+                25,
+                52,
+                3,
+                53,
+                27,
+                48,
+                29,
+                27,
+                19,
+                28,
+                24,
+                17,
+                7,
+                22,
+                26,
+                22,
+                119,
+                57,
+                79,
+                266,
+                216,
+                119,
+                83,
+                333,
+                113,
+                217,
+                0,
+                223,
+                271,
+                106,
+                393,
+                421,
+                101,
+                242,
+                31,
+                200,
+                1292,
+                1309,
+                1309,
+                1343,
+                3226,
+                1200,
+                905,
+                2715,
+                1416,
+                505
+            ]
+        },
+        {
+            "Id": 32,
+            "Name": "J32",
+            "ProcessingTime": 150,
+            "DueTime": 830,
+            "EligibleMachineIds": [
+                3
+            ],
+            "RequiredResources": [],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 60,
+            "JobSetupTimes": [
+                28,
+                24,
+                16,
+                83,
+                25,
+                72,
+                3,
+                55,
+                27,
+                33,
+                29,
+                27,
+                19,
+                28,
+                24,
+                17,
+                7,
+                22,
+                26,
+                22,
+                286,
+                57,
+                148,
+                228,
+                208,
+                119,
+                83,
+                303,
+                113,
+                194,
+                368,
+                0,
+                115,
+                173,
+                395,
+                305,
+                101,
+                223,
+                31,
+                169,
+                1292,
+                1309,
+                1309,
+                1343,
+                3089,
+                1200,
+                905,
+                1980,
+                1416,
+                557
+            ]
+        },
+        {
+            "Id": 33,
+            "Name": "J33",
+            "ProcessingTime": 181,
+            "DueTime": 1253,
+            "EligibleMachineIds": [
+                1,
+                2,
+                3,
+                5
+            ],
+            "RequiredResources": [
+                {
+                    "ResourceId": 2,
+                    "Capacity": 1
+                },
+                {
+                    "ResourceId": 4,
+                    "Capacity": 4
+                },
+                {
+                    "ResourceId": 5,
+                    "Capacity": 3
+                }
+            ],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 116,
+            "JobSetupTimes": [
+                85,
+                86,
+                63,
+                72,
+                89,
+                90,
+                9,
+                44,
+                76,
+                64,
+                80,
+                76,
+                56,
+                88,
+                89,
+                18,
+                27,
+                64,
+                65,
+                22,
+                450,
+                202,
+                269,
+                197,
+                190,
+                269,
+                172,
+                414,
+                113,
+                290,
+                367,
+                95,
+                0,
+                300,
+                399,
+                395,
+                234,
+                342,
+                98,
+                188,
+                1292,
+                2218,
+                3316,
+                3381,
+                3509,
+                1200,
+                3231,
+                2570,
+                4250,
+                670
+            ]
+        },
+        {
+            "Id": 34,
+            "Name": "J34",
+            "ProcessingTime": 190,
+            "DueTime": 457,
+            "EligibleMachineIds": [
+                1,
+                3,
+                4,
+                5
+            ],
+            "RequiredResources": [
+                {
+                    "ResourceId": 1,
+                    "Capacity": 4
+                },
+                {
+                    "ResourceId": 2,
+                    "Capacity": 3
+                },
+                {
+                    "ResourceId": 3,
+                    "Capacity": 4
+                },
+                {
+                    "ResourceId": 4,
+                    "Capacity": 3
+                },
+                {
+                    "ResourceId": 5,
+                    "Capacity": 3
+                },
+                {
+                    "ResourceId": 6,
+                    "Capacity": 1
+                }
+            ],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 62,
+            "JobSetupTimes": [
+                82,
+                24,
+                50,
+                72,
+                45,
+                96,
+                6,
+                74,
+                27,
+                59,
+                29,
+                58,
+                38,
+                77,
+                25,
+                49,
+                16,
+                76,
+                26,
+                63,
+                119,
+                57,
+                79,
+                232,
+                118,
+                334,
+                269,
+                365,
+                245,
+                249,
+                93,
+                279,
+                438,
+                0,
+                356,
+                314,
+                264,
+                328,
+                31,
+                142,
+                3452,
+                3052,
+                4730,
+                4103,
+                3616,
+                2750,
+                3242,
+                2576,
+                3652,
+                586
+            ]
+        },
+        {
+            "Id": 35,
+            "Name": "J35",
+            "ProcessingTime": 238,
+            "DueTime": 12781,
+            "EligibleMachineIds": [
+                1,
+                3,
+                4,
+                5
+            ],
+            "RequiredResources": [
+                {
+                    "ResourceId": 4,
+                    "Capacity": 1
+                },
+                {
+                    "ResourceId": 6,
+                    "Capacity": 2
+                }
+            ],
+            "PrecedenceJobIds": [
+                46
+            ],
+            "InitialSetupTime": 91,
+            "JobSetupTimes": [
+                84,
+                24,
+                53,
+                89,
+                28,
+                107,
+                7,
+                60,
+                27,
+                55,
+                48,
+                27,
+                64,
+                28,
+                32,
+                35,
+                17,
+                69,
+                88,
+                46,
+                308,
+                57,
+                164,
+                225,
+                112,
+                402,
+                83,
+                445,
+                446,
+                253,
+                205,
+                322,
+                403,
+                317,
+                0,
+                315,
+                239,
+                268,
+                31,
+                177,
+                2648,
+                4581,
+                2977,
+                3172,
+                2273,
+                4546,
+                3155,
+                2486,
+                5019,
+                574
+            ]
+        },
+        {
+            "Id": 36,
+            "Name": "J36",
+            "ProcessingTime": 185,
+            "DueTime": 726,
+            "EligibleMachineIds": [
+                1,
+                2,
+                3,
+                4,
+                5
+            ],
+            "RequiredResources": [
+                {
+                    "ResourceId": 1,
+                    "Capacity": 4
+                },
+                {
+                    "ResourceId": 5,
+                    "Capacity": 1
+                },
+                {
+                    "ResourceId": 6,
+                    "Capacity": 1
+                },
+                {
+                    "ResourceId": 7,
+                    "Capacity": 4
+                }
+            ],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 103,
+            "JobSetupTimes": [
+                111,
+                94,
+                37,
+                64,
+                55,
+                98,
+                8,
+                87,
+                59,
+                57,
+                72,
+                87,
+                56,
+                85,
+                67,
+                66,
+                21,
+                77,
+                92,
+                55,
+                287,
+                138,
+                201,
+                240,
+                162,
+                470,
+                279,
+                415,
+                336,
+                272,
+                254,
+                330,
+                453,
+                278,
+                396,
+                0,
+                301,
+                221,
+                80,
+                120,
+                3323,
+                5113,
+                4336,
+                4649,
+                3513,
+                3816,
+                2911,
+                2556,
+                3559,
+                440
+            ]
+        },
+        {
+            "Id": 37,
+            "Name": "J37",
+            "ProcessingTime": 228,
+            "DueTime": 8229,
+            "EligibleMachineIds": [
+                1,
+                4
+            ],
+            "RequiredResources": [
+                {
+                    "ResourceId": 1,
+                    "Capacity": 3
+                },
+                {
+                    "ResourceId": 2,
+                    "Capacity": 1
+                },
+                {
+                    "ResourceId": 7,
+                    "Capacity": 2
+                }
+            ],
+            "PrecedenceJobIds": [
+                19
+            ],
+            "InitialSetupTime": 113,
+            "JobSetupTimes": [
+                106,
+                24,
+                45,
+                55,
+                39,
+                93,
+                3,
+                74,
+                27,
+                56,
+                63,
+                58,
+                75,
+                106,
+                37,
+                34,
+                7,
+                80,
+                91,
+                50,
+                119,
+                57,
+                203,
+                79,
+                55,
+                119,
+                83,
+                260,
+                349,
+                86,
+                93,
+                95,
+                327,
+                211,
+                333,
+                226,
+                0,
+                299,
+                31,
+                55,
+                3538,
+                2921,
+                4047,
+                3345,
+                3541,
+                2829,
+                905,
+                2355,
+                1416,
+                205
+            ]
+        },
+        {
+            "Id": 38,
+            "Name": "J38",
+            "ProcessingTime": 186,
+            "DueTime": 3281,
+            "EligibleMachineIds": [
+                1,
+                3
+            ],
+            "RequiredResources": [
+                {
+                    "ResourceId": 2,
+                    "Capacity": 4
+                },
+                {
+                    "ResourceId": 4,
+                    "Capacity": 3
+                },
+                {
+                    "ResourceId": 5,
+                    "Capacity": 4
+                },
+                {
+                    "ResourceId": 6,
+                    "Capacity": 4
+                },
+                {
+                    "ResourceId": 7,
+                    "Capacity": 3
+                }
+            ],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 66,
+            "JobSetupTimes": [
+                108,
+                24,
+                55,
+                105,
+                46,
+                96,
+                3,
+                55,
+                27,
+                57,
+                60,
+                65,
+                73,
+                111,
+                24,
+                17,
+                7,
+                77,
+                59,
+                22,
+                419,
+                57,
+                180,
+                198,
+                211,
+                119,
+                83,
+                393,
+                113,
+                158,
+                336,
+                194,
+                428,
+                230,
+                317,
+                427,
+                246,
+                0,
+                31,
+                115,
+                1292,
+                1309,
+                3373,
+                3022,
+                2926,
+                1200,
+                905,
+                2076,
+                1416,
+                687
+            ]
+        },
+        {
+            "Id": 39,
+            "Name": "J39",
+            "ProcessingTime": 199,
+            "DueTime": 8436,
+            "EligibleMachineIds": [
+                2
+            ],
+            "RequiredResources": [],
+            "PrecedenceJobIds": [
+                26
+            ],
+            "InitialSetupTime": 61,
+            "JobSetupTimes": [
+                28,
+                59,
+                16,
+                28,
+                99,
+                42,
+                3,
+                23,
+                56,
+                79,
+                61,
+                27,
+                23,
+                28,
+                69,
+                32,
+                7,
+                22,
+                26,
+                22,
+                316,
+                199,
+                102,
+                79,
+                55,
+                119,
+                83,
+                126,
+                113,
+                162,
+                93,
+                95,
+                275,
+                106,
+                119,
+                129,
+                101,
+                93,
+                0,
+                55,
+                1292,
+                3536,
+                2451,
+                1343,
+                1860,
+                1200,
+                1870,
+                799,
+                2861,
+                205
+            ]
+        },
+        {
+            "Id": 40,
+            "Name": "J40",
+            "ProcessingTime": 189,
+            "DueTime": 15932,
+            "EligibleMachineIds": [
+                3
+            ],
+            "RequiredResources": [],
+            "PrecedenceJobIds": [
+                35
+            ],
+            "InitialSetupTime": 37,
+            "JobSetupTimes": [
+                28,
+                24,
+                16,
+                105,
+                25,
+                61,
+                3,
+                38,
+                27,
+                45,
+                29,
+                27,
+                19,
+                28,
+                24,
+                17,
+                7,
+                22,
+                26,
+                22,
+                327,
+                57,
+                104,
+                233,
+                151,
+                119,
+                83,
+                410,
+                113,
+                237,
+                324,
+                243,
+                313,
+                106,
+                209,
+                313,
+                101,
+                247,
+                31,
+                0,
+                1292,
+                1309,
+                1309,
+                1818,
+                2719,
+                1200,
+                905,
+                2500,
+                1416,
+                690
+            ]
+        },
+        {
+            "Id": 41,
+            "Name": "J41",
+            "ProcessingTime": 2042,
+            "DueTime": 12113,
+            "EligibleMachineIds": [
+                4
+            ],
+            "RequiredResources": [],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 975,
+            "JobSetupTimes": [
+                43,
+                24,
+                16,
+                29,
+                25,
+                65,
+                3,
+                64,
+                27,
+                68,
+                29,
+                27,
+                19,
+                28,
+                29,
+                40,
+                7,
+                24,
+                97,
+                72,
+                119,
+                57,
+                79,
+                79,
+                55,
+                119,
+                83,
+                186,
+                257,
+                86,
+                93,
+                95,
+                115,
+                178,
+                291,
+                168,
+                229,
+                93,
+                31,
+                55,
+                0,
+                4635,
+                1309,
+                1343,
+                1010,
+                2765,
+                905,
+                2492,
+                1416,
+                205
+            ]
+        },
+        {
+            "Id": 42,
+            "Name": "J42",
+            "ProcessingTime": 2391,
+            "DueTime": 10893,
+            "EligibleMachineIds": [
+                2,
+                3,
+                4
+            ],
+            "RequiredResources": [],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 1438,
+            "JobSetupTimes": [
+                45,
+                92,
+                16,
+                28,
+                83,
+                77,
+                3,
+                83,
+                106,
+                70,
+                77,
+                27,
+                30,
+                28,
+                78,
+                41,
+                7,
+                71,
+                83,
+                63,
+                468,
+                136,
+                162,
+                79,
+                207,
+                119,
+                83,
+                417,
+                330,
+                239,
+                315,
+                352,
+                247,
+                231,
+                332,
+                225,
+                179,
+                161,
+                83,
+                187,
+                4204,
+                0,
+                1309,
+                1684,
+                2330,
+                3487,
+                1922,
+                2997,
+                1875,
+                570
+            ]
+        },
+        {
+            "Id": 43,
+            "Name": "J43",
+            "ProcessingTime": 2688,
+            "DueTime": 794,
+            "EligibleMachineIds": [
+                1,
+                2
+            ],
+            "RequiredResources": [
+                {
+                    "ResourceId": 1,
+                    "Capacity": 3
+                },
+                {
+                    "ResourceId": 2,
+                    "Capacity": 1
+                },
+                {
+                    "ResourceId": 3,
+                    "Capacity": 1
+                },
+                {
+                    "ResourceId": 4,
+                    "Capacity": 3
+                },
+                {
+                    "ResourceId": 5,
+                    "Capacity": 3
+                },
+                {
+                    "ResourceId": 6,
+                    "Capacity": 4
+                },
+                {
+                    "ResourceId": 7,
+                    "Capacity": 3
+                },
+                {
+                    "ResourceId": 8,
+                    "Capacity": 2
+                }
+            ],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 1429,
+            "JobSetupTimes": [
+                93,
+                48,
+                51,
+                28,
+                96,
+                94,
+                3,
+                40,
+                94,
+                62,
+                105,
+                93,
+                51,
+                105,
+                64,
+                21,
+                7,
+                69,
+                84,
+                22,
+                291,
+                223,
+                298,
+                79,
+                55,
+                119,
+                83,
+                255,
+                113,
+                209,
+                93,
+                95,
+                282,
+                197,
+                125,
+                215,
+                380,
+                287,
+                76,
+                55,
+                1292,
+                1309,
+                0,
+                3684,
+                3877,
+                1200,
+                3052,
+                868,
+                1757,
+                205
+            ]
+        },
+        {
+            "Id": 44,
+            "Name": "J44",
+            "ProcessingTime": 2825,
+            "DueTime": 12043,
+            "EligibleMachineIds": [
+                1,
+                3,
+                4,
+                5
+            ],
+            "RequiredResources": [
+                {
+                    "ResourceId": 1,
+                    "Capacity": 1
+                },
+                {
+                    "ResourceId": 2,
+                    "Capacity": 1
+                },
+                {
+                    "ResourceId": 3,
+                    "Capacity": 4
+                },
+                {
+                    "ResourceId": 4,
+                    "Capacity": 1
+                },
+                {
+                    "ResourceId": 8,
+                    "Capacity": 1
+                }
+            ],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 958,
+            "JobSetupTimes": [
+                85,
+                24,
+                60,
+                98,
+                40,
+                97,
+                9,
+                74,
+                27,
+                60,
+                62,
+                87,
+                64,
+                111,
+                24,
+                64,
+                7,
+                54,
+                96,
+                55,
+                324,
+                57,
+                301,
+                248,
+                146,
+                280,
+                318,
+                339,
+                374,
+                309,
+                219,
+                253,
+                359,
+                359,
+                393,
+                407,
+                296,
+                312,
+                31,
+                160,
+                1292,
+                4967,
+                4472,
+                0,
+                2347,
+                3529,
+                2594,
+                2751,
+                5590,
+                535
+            ]
+        },
+        {
+            "Id": 45,
+            "Name": "J45",
+            "ProcessingTime": 2177,
+            "DueTime": 4669,
+            "EligibleMachineIds": [
+                1,
+                2,
+                3,
+                4,
+                5
+            ],
+            "RequiredResources": [
+                {
+                    "ResourceId": 1,
+                    "Capacity": 3
+                },
+                {
+                    "ResourceId": 2,
+                    "Capacity": 4
+                },
+                {
+                    "ResourceId": 3,
+                    "Capacity": 3
+                },
+                {
+                    "ResourceId": 5,
+                    "Capacity": 3
+                },
+                {
+                    "ResourceId": 6,
+                    "Capacity": 1
+                },
+                {
+                    "ResourceId": 7,
+                    "Capacity": 1
+                },
+                {
+                    "ResourceId": 8,
+                    "Capacity": 3
+                }
+            ],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 1175,
+            "JobSetupTimes": [
+                103,
+                68,
+                16,
+                86,
+                52,
+                86,
+                7,
+                58,
+                104,
+                86,
+                86,
+                105,
+                56,
+                64,
+                81,
+                17,
+                14,
+                83,
+                93,
+                87,
+                286,
+                138,
+                221,
+                204,
+                151,
+                287,
+                276,
+                413,
+                420,
+                260,
+                197,
+                213,
+                454,
+                238,
+                384,
+                343,
+                327,
+                211,
+                86,
+                132,
+                4953,
+                3903,
+                4659,
+                4367,
+                0,
+                3174,
+                2866,
+                2092,
+                4060,
+                410
+            ]
+        },
+        {
+            "Id": 46,
+            "Name": "J46",
+            "ProcessingTime": 2223,
+            "DueTime": 13694,
+            "EligibleMachineIds": [
+                4
+            ],
+            "RequiredResources": [],
+            "PrecedenceJobIds": [
+                10
+            ],
+            "InitialSetupTime": 695,
+            "JobSetupTimes": [
+                46,
+                24,
+                16,
+                46,
+                25,
+                65,
+                3,
+                82,
+                27,
+                52,
+                29,
+                27,
+                19,
+                28,
+                37,
+                45,
+                7,
+                30,
+                52,
+                49,
+                119,
+                57,
+                79,
+                79,
+                55,
+                119,
+                83,
+                243,
+                238,
+                86,
+                93,
+                95,
+                115,
+                201,
+                427,
+                186,
+                275,
+                93,
+                31,
+                55,
+                4567,
+                3179,
+                1309,
+                1343,
+                1010,
+                0,
+                905,
+                2990,
+                1416,
+                205
+            ]
+        },
+        {
+            "Id": 47,
+            "Name": "J47",
+            "ProcessingTime": 1882,
+            "DueTime": 8976,
+            "EligibleMachineIds": [
+                1,
+                2,
+                5
+            ],
+            "RequiredResources": [
+                {
+                    "ResourceId": 3,
+                    "Capacity": 2
+                },
+                {
+                    "ResourceId": 5,
+                    "Capacity": 2
+                },
+                {
+                    "ResourceId": 6,
+                    "Capacity": 1
+                }
+            ],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 565,
+            "JobSetupTimes": [
+                70,
+                65,
+                62,
+                28,
+                66,
+                92,
+                9,
+                56,
+                74,
+                62,
+                91,
+                73,
+                49,
+                108,
+                73,
+                30,
+                16,
+                50,
+                51,
+                22,
+                288,
+                224,
+                233,
+                268,
+                95,
+                283,
+                280,
+                116,
+                113,
+                86,
+                93,
+                95,
+                252,
+                274,
+                367,
+                159,
+                222,
+                274,
+                101,
+                55,
+                1292,
+                2710,
+                4847,
+                4289,
+                3364,
+                1200,
+                0,
+                1028,
+                4608,
+                205
+            ]
+        },
+        {
+            "Id": 48,
+            "Name": "J48",
+            "ProcessingTime": 2364,
+            "DueTime": 15650,
+            "EligibleMachineIds": [
+                1,
+                3,
+                4
+            ],
+            "RequiredResources": [
+                {
+                    "ResourceId": 2,
+                    "Capacity": 4
+                },
+                {
+                    "ResourceId": 5,
+                    "Capacity": 2
+                }
+            ],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 1421,
+            "JobSetupTimes": [
+                94,
+                24,
+                33,
+                107,
+                33,
+                97,
+                3,
+                23,
+                27,
+                55,
+                68,
+                101,
+                39,
+                85,
+                25,
+                53,
+                7,
+                77,
+                96,
+                72,
+                294,
+                57,
+                193,
+                274,
+                166,
+                119,
+                83,
+                392,
+                411,
+                154,
+                351,
+                299,
+                447,
+                208,
+                347,
+                310,
+                364,
+                258,
+                31,
+                144,
+                4594,
+                4209,
+                4138,
+                2732,
+                3939,
+                4018,
+                905,
+                0,
+                1416,
+                430
+            ]
+        },
+        {
+            "Id": 49,
+            "Name": "J49",
+            "ProcessingTime": 1724,
+            "DueTime": 13052,
+            "EligibleMachineIds": [
+                2,
+                5
+            ],
+            "RequiredResources": [],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 620,
+            "JobSetupTimes": [
+                50,
+                73,
+                16,
+                28,
+                58,
+                39,
+                10,
+                59,
+                85,
+                94,
+                76,
+                27,
+                24,
+                57,
+                61,
+                31,
+                23,
+                51,
+                26,
+                22,
+                303,
+                197,
+                131,
+                192,
+                123,
+                372,
+                256,
+                291,
+                113,
+                247,
+                93,
+                95,
+                173,
+                273,
+                254,
+                199,
+                101,
+                93,
+                119,
+                55,
+                1292,
+                4029,
+                1533,
+                3566,
+                3312,
+                1200,
+                3606,
+                799,
+                0,
+                205
+            ]
+        },
+        {
+            "Id": 50,
+            "Name": "J50",
+            "ProcessingTime": 631,
+            "DueTime": 16767,
+            "EligibleMachineIds": [
+                3
+            ],
+            "RequiredResources": [],
+            "PrecedenceJobIds": [],
+            "InitialSetupTime": 857,
+            "JobSetupTimes": [
+                28,
+                24,
+                16,
+                77,
+                25,
+                77,
+                3,
+                49,
+                27,
+                50,
+                29,
+                27,
+                19,
+                28,
+                24,
+                17,
+                7,
+                22,
+                26,
+                22,
+                391,
+                57,
+                136,
+                246,
+                198,
+                119,
+                83,
+                319,
+                113,
+                147,
+                365,
+                353,
+                450,
+                139,
+                267,
+                357,
+                101,
+                215,
+                31,
+                185,
+                1292,
+                1309,
+                1309,
+                1734,
+                1964,
+                1200,
+                905,
+                2725,
+                1416,
+                0
+            ]
+        }
+    ],
+    "Resources": [
+        {
+            "Id": 1,
+            "Name": "Resource 1",
+            "AvailabilityPeriods": [
+                {
+                    "Start": 0,
+                    "End": 3246,
+                    "Capacity": 26
+                },
+                {
+                    "Start": 3246,
+                    "End": 6492,
+                    "Capacity": 25
+                },
+                {
+                    "Start": 6492,
+                    "End": 9738,
+                    "Capacity": 25
+                },
+                {
+                    "Start": 9738,
+                    "End": 12984,
+                    "Capacity": 23
+                },
+                {
+                    "Start": 12984,
+                    "End": 16230,
+                    "Capacity": 21
+                },
+                {
+                    "Start": 16230,
+                    "End": 19476,
+                    "Capacity": 18
+                },
+                {
+                    "Start": 19476,
+                    "End": 22722,
+                    "Capacity": 18
+                },
+                {
+                    "Start": 22722,
+                    "End": 25968,
+                    "Capacity": 18
+                },
+                {
+                    "Start": 25968,
+                    "End": 29214,
+                    "Capacity": 20
+                },
+                {
+                    "Start": 29214,
+                    "End": 32460,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 32460,
+                    "End": 35706,
+                    "Capacity": 22
+                },
+                {
+                    "Start": 35706,
+                    "End": 38952,
+                    "Capacity": 19
+                },
+                {
+                    "Start": 38952,
+                    "End": 42198,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 42198,
+                    "End": 45444,
+                    "Capacity": 18
+                },
+                {
+                    "Start": 45444,
+                    "End": 48690,
+                    "Capacity": 16
+                },
+                {
+                    "Start": 48690,
+                    "End": 51936,
+                    "Capacity": 15
+                },
+                {
+                    "Start": 51936,
+                    "End": 55182,
+                    "Capacity": 17
+                },
+                {
+                    "Start": 55182,
+                    "End": 58428,
+                    "Capacity": 17
+                },
+                {
+                    "Start": 58428,
+                    "End": 61674,
+                    "Capacity": 17
+                },
+                {
+                    "Start": 61674,
+                    "End": 64920,
+                    "Capacity": 17
+                },
+                {
+                    "Start": 64920,
+                    "End": 68166,
+                    "Capacity": 16
+                },
+                {
+                    "Start": 68166,
+                    "End": 71412,
+                    "Capacity": 14
+                },
+                {
+                    "Start": 71412,
+                    "End": 74658,
+                    "Capacity": 16
+                },
+                {
+                    "Start": 74658,
+                    "End": 77904,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 77904,
+                    "End": 81150,
+                    "Capacity": 16
+                },
+                {
+                    "Start": 81150,
+                    "End": 84396,
+                    "Capacity": 19
+                },
+                {
+                    "Start": 84396,
+                    "End": 87642,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 87642,
+                    "End": 90888,
+                    "Capacity": 17
+                },
+                {
+                    "Start": 90888,
+                    "End": 94134,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 94134,
+                    "End": 97380,
+                    "Capacity": 18
+                },
+                {
+                    "Start": 97380,
+                    "End": 100000,
+                    "Capacity": 19
+                }
+            ]
+        },
+        {
+            "Id": 2,
+            "Name": "Resource 2",
+            "AvailabilityPeriods": [
+                {
+                    "Start": 0,
+                    "End": 6001,
+                    "Capacity": 19
+                },
+                {
+                    "Start": 6001,
+                    "End": 12002,
+                    "Capacity": 18
+                },
+                {
+                    "Start": 12002,
+                    "End": 18003,
+                    "Capacity": 15
+                },
+                {
+                    "Start": 18003,
+                    "End": 24004,
+                    "Capacity": 15
+                },
+                {
+                    "Start": 24004,
+                    "End": 30005,
+                    "Capacity": 16
+                },
+                {
+                    "Start": 30005,
+                    "End": 36006,
+                    "Capacity": 14
+                },
+                {
+                    "Start": 36006,
+                    "End": 42007,
+                    "Capacity": 14
+                },
+                {
+                    "Start": 42007,
+                    "End": 48008,
+                    "Capacity": 16
+                },
+                {
+                    "Start": 48008,
+                    "End": 54009,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 54009,
+                    "End": 60010,
+                    "Capacity": 15
+                },
+                {
+                    "Start": 60010,
+                    "End": 66011,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 66011,
+                    "End": 72012,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 72012,
+                    "End": 78013,
+                    "Capacity": 17
+                },
+                {
+                    "Start": 78013,
+                    "End": 84014,
+                    "Capacity": 15
+                },
+                {
+                    "Start": 84014,
+                    "End": 90015,
+                    "Capacity": 16
+                },
+                {
+                    "Start": 90015,
+                    "End": 96016,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 96016,
+                    "End": 100000,
+                    "Capacity": 13
+                }
+            ]
+        },
+        {
+            "Id": 3,
+            "Name": "Resource 3",
+            "AvailabilityPeriods": [
+                {
+                    "Start": 0,
+                    "End": 2920,
+                    "Capacity": 17
+                },
+                {
+                    "Start": 2920,
+                    "End": 5840,
+                    "Capacity": 20
+                },
+                {
+                    "Start": 5840,
+                    "End": 8760,
+                    "Capacity": 22
+                },
+                {
+                    "Start": 8760,
+                    "End": 11680,
+                    "Capacity": 23
+                },
+                {
+                    "Start": 11680,
+                    "End": 14600,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 14600,
+                    "End": 17520,
+                    "Capacity": 19
+                },
+                {
+                    "Start": 17520,
+                    "End": 20440,
+                    "Capacity": 15
+                },
+                {
+                    "Start": 20440,
+                    "End": 23360,
+                    "Capacity": 13
+                },
+                {
+                    "Start": 23360,
+                    "End": 26280,
+                    "Capacity": 14
+                },
+                {
+                    "Start": 26280,
+                    "End": 29200,
+                    "Capacity": 11
+                },
+                {
+                    "Start": 29200,
+                    "End": 32120,
+                    "Capacity": 14
+                },
+                {
+                    "Start": 32120,
+                    "End": 35040,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 35040,
+                    "End": 37960,
+                    "Capacity": 17
+                },
+                {
+                    "Start": 37960,
+                    "End": 40880,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 40880,
+                    "End": 43800,
+                    "Capacity": 14
+                },
+                {
+                    "Start": 43800,
+                    "End": 46720,
+                    "Capacity": 12
+                },
+                {
+                    "Start": 46720,
+                    "End": 49640,
+                    "Capacity": 11
+                },
+                {
+                    "Start": 49640,
+                    "End": 52560,
+                    "Capacity": 12
+                },
+                {
+                    "Start": 52560,
+                    "End": 55480,
+                    "Capacity": 12
+                },
+                {
+                    "Start": 55480,
+                    "End": 58400,
+                    "Capacity": 10
+                },
+                {
+                    "Start": 58400,
+                    "End": 61320,
+                    "Capacity": 13
+                },
+                {
+                    "Start": 61320,
+                    "End": 64240,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 64240,
+                    "End": 67160,
+                    "Capacity": 11
+                },
+                {
+                    "Start": 67160,
+                    "End": 70080,
+                    "Capacity": 14
+                },
+                {
+                    "Start": 70080,
+                    "End": 73000,
+                    "Capacity": 17
+                },
+                {
+                    "Start": 73000,
+                    "End": 75920,
+                    "Capacity": 17
+                },
+                {
+                    "Start": 75920,
+                    "End": 78840,
+                    "Capacity": 15
+                },
+                {
+                    "Start": 78840,
+                    "End": 81760,
+                    "Capacity": 13
+                },
+                {
+                    "Start": 81760,
+                    "End": 84680,
+                    "Capacity": 12
+                },
+                {
+                    "Start": 84680,
+                    "End": 87600,
+                    "Capacity": 12
+                },
+                {
+                    "Start": 87600,
+                    "End": 90520,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 90520,
+                    "End": 93440,
+                    "Capacity": 15
+                },
+                {
+                    "Start": 93440,
+                    "End": 96360,
+                    "Capacity": 13
+                },
+                {
+                    "Start": 96360,
+                    "End": 99280,
+                    "Capacity": 11
+                },
+                {
+                    "Start": 99280,
+                    "End": 100000,
+                    "Capacity": 11
+                }
+            ]
+        },
+        {
+            "Id": 4,
+            "Name": "Resource 4",
+            "AvailabilityPeriods": [
+                {
+                    "Start": 0,
+                    "End": 2486,
+                    "Capacity": 20
+                },
+                {
+                    "Start": 2486,
+                    "End": 4972,
+                    "Capacity": 20
+                },
+                {
+                    "Start": 4972,
+                    "End": 7458,
+                    "Capacity": 22
+                },
+                {
+                    "Start": 7458,
+                    "End": 9944,
+                    "Capacity": 20
+                },
+                {
+                    "Start": 9944,
+                    "End": 12430,
+                    "Capacity": 22
+                },
+                {
+                    "Start": 12430,
+                    "End": 14916,
+                    "Capacity": 22
+                },
+                {
+                    "Start": 14916,
+                    "End": 17402,
+                    "Capacity": 22
+                },
+                {
+                    "Start": 17402,
+                    "End": 19888,
+                    "Capacity": 22
+                },
+                {
+                    "Start": 19888,
+                    "End": 22374,
+                    "Capacity": 21
+                },
+                {
+                    "Start": 22374,
+                    "End": 24860,
+                    "Capacity": 19
+                },
+                {
+                    "Start": 24860,
+                    "End": 27346,
+                    "Capacity": 16
+                },
+                {
+                    "Start": 27346,
+                    "End": 29832,
+                    "Capacity": 18
+                },
+                {
+                    "Start": 29832,
+                    "End": 32318,
+                    "Capacity": 17
+                },
+                {
+                    "Start": 32318,
+                    "End": 34804,
+                    "Capacity": 14
+                },
+                {
+                    "Start": 34804,
+                    "End": 37290,
+                    "Capacity": 16
+                },
+                {
+                    "Start": 37290,
+                    "End": 39776,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 39776,
+                    "End": 42262,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 42262,
+                    "End": 44748,
+                    "Capacity": 16
+                },
+                {
+                    "Start": 44748,
+                    "End": 47234,
+                    "Capacity": 15
+                },
+                {
+                    "Start": 47234,
+                    "End": 49720,
+                    "Capacity": 16
+                },
+                {
+                    "Start": 49720,
+                    "End": 52206,
+                    "Capacity": 16
+                },
+                {
+                    "Start": 52206,
+                    "End": 54692,
+                    "Capacity": 14
+                },
+                {
+                    "Start": 54692,
+                    "End": 57178,
+                    "Capacity": 16
+                },
+                {
+                    "Start": 57178,
+                    "End": 59664,
+                    "Capacity": 18
+                },
+                {
+                    "Start": 59664,
+                    "End": 62150,
+                    "Capacity": 16
+                },
+                {
+                    "Start": 62150,
+                    "End": 64636,
+                    "Capacity": 17
+                },
+                {
+                    "Start": 64636,
+                    "End": 67122,
+                    "Capacity": 19
+                },
+                {
+                    "Start": 67122,
+                    "End": 69608,
+                    "Capacity": 18
+                },
+                {
+                    "Start": 69608,
+                    "End": 72094,
+                    "Capacity": 18
+                },
+                {
+                    "Start": 72094,
+                    "End": 74580,
+                    "Capacity": 18
+                },
+                {
+                    "Start": 74580,
+                    "End": 77066,
+                    "Capacity": 20
+                },
+                {
+                    "Start": 77066,
+                    "End": 79552,
+                    "Capacity": 20
+                },
+                {
+                    "Start": 79552,
+                    "End": 82038,
+                    "Capacity": 20
+                },
+                {
+                    "Start": 82038,
+                    "End": 84524,
+                    "Capacity": 17
+                },
+                {
+                    "Start": 84524,
+                    "End": 87010,
+                    "Capacity": 16
+                },
+                {
+                    "Start": 87010,
+                    "End": 89496,
+                    "Capacity": 17
+                },
+                {
+                    "Start": 89496,
+                    "End": 91982,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 91982,
+                    "End": 94468,
+                    "Capacity": 16
+                },
+                {
+                    "Start": 94468,
+                    "End": 96954,
+                    "Capacity": 14
+                },
+                {
+                    "Start": 96954,
+                    "End": 99440,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 99440,
+                    "End": 100000,
+                    "Capacity": 0
+                }
+            ]
+        },
+        {
+            "Id": 5,
+            "Name": "Resource 5",
+            "AvailabilityPeriods": [
+                {
+                    "Start": 0,
+                    "End": 7260,
+                    "Capacity": 17
+                },
+                {
+                    "Start": 7260,
+                    "End": 14520,
+                    "Capacity": 19
+                },
+                {
+                    "Start": 14520,
+                    "End": 21780,
+                    "Capacity": 19
+                },
+                {
+                    "Start": 21780,
+                    "End": 29040,
+                    "Capacity": 15
+                },
+                {
+                    "Start": 29040,
+                    "End": 36300,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 36300,
+                    "End": 43560,
+                    "Capacity": 12
+                },
+                {
+                    "Start": 43560,
+                    "End": 50820,
+                    "Capacity": 13
+                },
+                {
+                    "Start": 50820,
+                    "End": 58080,
+                    "Capacity": 16
+                },
+                {
+                    "Start": 58080,
+                    "End": 65340,
+                    "Capacity": 16
+                },
+                {
+                    "Start": 65340,
+                    "End": 72600,
+                    "Capacity": 16
+                },
+                {
+                    "Start": 72600,
+                    "End": 79860,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 79860,
+                    "End": 87120,
+                    "Capacity": 17
+                },
+                {
+                    "Start": 87120,
+                    "End": 94380,
+                    "Capacity": 14
+                },
+                {
+                    "Start": 94380,
+                    "End": 100000,
+                    "Capacity": 13
+                }
+            ]
+        },
+        {
+            "Id": 6,
+            "Name": "Resource 6",
+            "AvailabilityPeriods": [
+                {
+                    "Start": 0,
+                    "End": 8114,
+                    "Capacity": 20
+                },
+                {
+                    "Start": 8114,
+                    "End": 16228,
+                    "Capacity": 18
+                },
+                {
+                    "Start": 16228,
+                    "End": 24342,
+                    "Capacity": 16
+                },
+                {
+                    "Start": 24342,
+                    "End": 32456,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 32456,
+                    "End": 40570,
+                    "Capacity": 18
+                },
+                {
+                    "Start": 40570,
+                    "End": 48684,
+                    "Capacity": 20
+                },
+                {
+                    "Start": 48684,
+                    "End": 56798,
+                    "Capacity": 16
+                },
+                {
+                    "Start": 56798,
+                    "End": 64912,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 64912,
+                    "End": 73026,
+                    "Capacity": 13
+                },
+                {
+                    "Start": 73026,
+                    "End": 81140,
+                    "Capacity": 14
+                },
+                {
+                    "Start": 81140,
+                    "End": 89254,
+                    "Capacity": 17
+                },
+                {
+                    "Start": 89254,
+                    "End": 97368,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 97368,
+                    "End": 100000,
+                    "Capacity": 18
+                }
+            ]
+        },
+        {
+            "Id": 7,
+            "Name": "Resource 7",
+            "AvailabilityPeriods": [
+                {
+                    "Start": 0,
+                    "End": 5912,
+                    "Capacity": 9
+                },
+                {
+                    "Start": 5912,
+                    "End": 11824,
+                    "Capacity": 10
+                },
+                {
+                    "Start": 11824,
+                    "End": 17736,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 17736,
+                    "End": 23648,
+                    "Capacity": 13
+                },
+                {
+                    "Start": 23648,
+                    "End": 29560,
+                    "Capacity": 11
+                },
+                {
+                    "Start": 29560,
+                    "End": 35472,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 35472,
+                    "End": 41384,
+                    "Capacity": 15
+                },
+                {
+                    "Start": 41384,
+                    "End": 47296,
+                    "Capacity": 15
+                },
+                {
+                    "Start": 47296,
+                    "End": 53208,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 53208,
+                    "End": 59120,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 59120,
+                    "End": 65032,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 65032,
+                    "End": 70944,
+                    "Capacity": 15
+                },
+                {
+                    "Start": 70944,
+                    "End": 76856,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 76856,
+                    "End": 82768,
+                    "Capacity": 17
+                },
+                {
+                    "Start": 82768,
+                    "End": 88680,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 88680,
+                    "End": 94592,
+                    "Capacity": 16
+                },
+                {
+                    "Start": 94592,
+                    "End": 100000,
+                    "Capacity": 17
+                }
+            ]
+        },
+        {
+            "Id": 8,
+            "Name": "Resource 8",
+            "AvailabilityPeriods": [
+                {
+                    "Start": 0,
+                    "End": 5623,
+                    "Capacity": 25
+                },
+                {
+                    "Start": 5623,
+                    "End": 11246,
+                    "Capacity": 25
+                },
+                {
+                    "Start": 11246,
+                    "End": 16869,
+                    "Capacity": 25
+                },
+                {
+                    "Start": 16869,
+                    "End": 22492,
+                    "Capacity": 22
+                },
+                {
+                    "Start": 22492,
+                    "End": 28115,
+                    "Capacity": 20
+                },
+                {
+                    "Start": 28115,
+                    "End": 33738,
+                    "Capacity": 19
+                },
+                {
+                    "Start": 33738,
+                    "End": 39361,
+                    "Capacity": 21
+                },
+                {
+                    "Start": 39361,
+                    "End": 44984,
+                    "Capacity": 0
+                },
+                {
+                    "Start": 44984,
+                    "End": 50607,
+                    "Capacity": 23
+                },
+                {
+                    "Start": 50607,
+                    "End": 56230,
+                    "Capacity": 19
+                },
+                {
+                    "Start": 56230,
+                    "End": 61853,
+                    "Capacity": 16
+                },
+                {
+                    "Start": 61853,
+                    "End": 67476,
+                    "Capacity": 15
+                },
+                {
+                    "Start": 67476,
+                    "End": 73099,
+                    "Capacity": 17
+                },
+                {
+                    "Start": 73099,
+                    "End": 78722,
+                    "Capacity": 15
+                },
+                {
+                    "Start": 78722,
+                    "End": 84345,
+                    "Capacity": 16
+                },
+                {
+                    "Start": 84345,
+                    "End": 89968,
+                    "Capacity": 13
+                },
+                {
+                    "Start": 89968,
+                    "End": 95591,
+                    "Capacity": 16
+                },
+                {
+                    "Start": 95591,
+                    "End": 100000,
+                    "Capacity": 19
+                }
+            ]
+        }
+    ]
+}
