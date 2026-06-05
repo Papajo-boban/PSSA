@@ -12,7 +12,16 @@ from pms_simulated_annealing import run_multiple_times
 
 # List of instances to run (you can add more)
 INSTANCES = [
-
+    "PSSAI_PMS_j10_m3_r0_1.json",
+    "PSSAI_PMS_j10_m3_r0_2.json",
+    "PSSAI_PMS_j10_m3_r1_5.json",
+    "PSSAI_PMS_j10_m3_r2_3.json",
+    "PSSAI_PMS_j10_m4_r1_4.json",
+    "PSSAI_PMS_j50_m1_r5_3.json",
+    "PSSAI_PMS_j50_m2_r8_1.json",
+    "PSSAI_PMS_j50_m5_r5_5.json",
+    "PSSAI_PMS_j50_m5_r8_2.json",
+    "PSSAI_PMS_j50_m5_r8_4.json",
     "PSSAI_PMS_j100_m1_r13_2.json",
     "PSSAI_PMS_j100_m2_r10_5.json",
     "PSSAI_PMS_j100_m6_r15_1.json",

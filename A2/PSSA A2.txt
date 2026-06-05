@@ -1,0 +1,99 @@
+REQUIREMENTS:
++Description of your algorithm
+Experiments/Selection of parameters
+?+Results for benchmark examples. Average results, best result and standard deviation over 5 runs should be reported for each instance.
++Conclusions/lessons learned
+?+Instructions how to run your program
+
+-----------------
+TODO:
++run 10j and 50j instances
++identify missing constraints
++add basic constraints
++add resource management constraints
++run 10j instances
++verify feasibility
+redesign pms_simulatted_annealing.py
+rerun 10j and 50j instances
+verify feasibility
+make comprehensible graph of results
+improve instructions how to run code
+try running 500j instances while running/eating
+experiment with selection of parameters
+
+
+
+
+
+
+----------------------
+VARIANTS:
+1.Best Fix
+Use an event/order-driven schedule construction instead of a pure machine-by-machine pass.
+
+Treat each machine’s assigned jobs as an ordered queue, then repeatedly schedule the next job whose predecessors are already scheduled. For each candidate job, its start time is:
+
+max(
+    machine_ready_time[machine_id],
+    max(finish_times[pred] for pred in predecessors)
+)
+When you schedule it, update:
+
+finish_times[job_idx]
+machine_ready_time[machine_id]
+the pointer to the next unscheduled job on that machine
+This gives proper global precedence handling across machines.
+
+Why this is the strongest approach
+
+respects machine sequence and cross-machine precedence at the same time
+detects deadlock naturally
+supports later additions like resources
+Deadlock / cycle detection
+If in one iteration no machine’s next job is schedulable, then one of these is true:
+
+there is a precedence cycle
+the machine sequences are incompatible with precedence constraints
+At that point, return infeasible.
+============================================
+
+2.
+Alternative Fix
+Build a global topological order first, then schedule in that order.
+
+You can derive a DAG from self.precedences and run a topological sort. Then schedule jobs following that order while also respecting machine availability and within-machine order.
+
+This works, but only if you also encode machine-order constraints into the graph. Otherwise topo order alone is not enough.
+================================================
+
+3.
+Another Practical Fix
+Iterate until times stabilize.
+
+You could do repeated passes over all machines, updating start/finish times until no value changes. This is easier to bolt on, but weaker:
+
+harder to reason about
+can mask invalid schedules
+still needs explicit cycle/inconsistency detection
+I would treat this as a temporary patch, not the real solution.
+
+Minimal Safety Improvement
+Before using a predecessor’s finish time, track whether that predecessor has actually been scheduled.
+
+For example, keep:
+
+scheduled[job_idx] = True/False
+Then when processing a job:
+
+if any predecessor is unscheduled, do not schedule this job yet
+That is basically the first approach, just stated as a guard.
+
+Recommended direction
+Refactor decode() into:
+
+Build jobs_by_machine
+Track each machine’s next unscheduled job
+Repeatedly pick schedulable front jobs
+Compute start from machine readiness + predecessor completion
+Detect no-progress as infeasible
+If you want, I can rewrite decode() that way.

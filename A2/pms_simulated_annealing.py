@@ -53,7 +53,7 @@ class SimulatedAnnealing:
         return neighbor
     
     def run(self) -> Dict:
-        current = self.random_solution()
+        current = self.random_feasible_solution()
         current_obj, current_tard, current_makespan, _, _ = self.instance.decode(current)
         
         best = current[:]
@@ -101,6 +101,13 @@ class SimulatedAnnealing:
             "runtime": round(time.time() - start_time, 2)
         }
 
+    def random_feasible_solution(self, max_attempts: int = 1000) -> List[int]:
+        for _ in range(max_attempts):
+            candidate = self.random_solution()
+            _, _, _, feasible, _ = self.instance.decode(candidate)
+            if feasible:
+                return candidate
+        raise RuntimeError("Could not generate a feasible initial solution.")
 
 def run_multiple_times(instance_path: str, n_runs: int = 5, **sa_params):
     instance = PMSInstance(instance_path)
