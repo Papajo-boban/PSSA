@@ -13,13 +13,164 @@ TODO:
 +add resource management constraints
 +run 10j instances
 +verify feasibility
-redesign pms_simulatted_annealing.py
-rerun 10j and 50j instances
-verify feasibility
++redesign pms_simulatted_annealing.py
++rerun 10j and 50j instances
++verify feasibility
++adjust and document hyperparam time for each run
 make comprehensible graph of results
 improve instructions how to run code
 try running 500j instances while running/eating
 experiment with selection of parameters
+
+------------------------------
+DOCUMENTATION:
+
+started with 45s
+changed a solution representation from a flat machine-assignment vector to explicit ordered job lists per machine
+
+
+before:
+[2, 1, 3, 2, 1, ...]
+
+after:
+[
+    [],
+    [0, 5, 2],
+    [1, 4],
+    [3, 6, 7]
+]
+where each machine directly owns an ordered sequence of jobs
+
+
+
+CHANGE: adjusted to 500s -> feasible
+because 1 instance = 5 runs (8 min each) = 40 min
+=> 
+CHANGE: adjusted to 60s -> still feasible
+
+avg objective difference = eval(60s) - eval(500s) / eval(500s):
+
+working with j50 instances because it needs more time to find optimum / can get more variety
+
+PSSAI_PMS_j50_m1_r5_3
+39597.8 ± 338.16 = [39259, 39935] 
+58735 ± 3029.05 = [55706, 61764]
+gap / performance ratio = [0.418, 0.546] = [42%,55%] decrease
+
+PSSAI_PMS_j50_m2_r8_1
+17977.6 ± 498.16 = [17479, 18475]
+36141 ± 1977.1 = [34164, 38118]
+gap / performance ratio = [0.95, 1.06] = [95%, 106%] decrease
+
+PSSAI_PMS_j50_m5_r5_5
+35684.6 ± 961.84
+
+PSSAI_PMS_j50_m5_r8_2
+23588.8 ± 922.77
+
+PSSAI_PMS_j50_m5_r8_4
+42362.6 ± 2273.04
+
+PSSAI_PMS_j100_m1_r13_2
+263254.6 ± 26121.08
+
+PSSAI_PMS_j100_m2_r10_5
+190936.4 ± 9679.86
+
+PSSAI_PMS_j100_m6_r15_1
+COULDNT CONSTRUCT FEASIBLE INITIAL SOLUTION IN TIME
+
+problem was giving up too early at construct_feasible_solution() with only max_restarts = 100
+
+
+CHANGE: increased to 200
+
+failed mid 3rd run
+
+CHANGE: increased to 400
+
+PSSAI_PMS_j100_m6_r15_1
+159857 ± 31757.74
+
+PSSAI_PMS_j100_m7_r10_3
+92798.2 ± 10218.95
+
+PSSAI_PMS_j100_m7_r18_4
+121619.4 ± 9883.23
+
+PSSAI_PMS_j500_m3_r33_2
+crashed on 2nd run by timeout
+
+CHANGE time: 240s
+
+CHANGE FROM:
+
+        summary = run_multiple_times(
+            full_path,
+            n_runs=5,
+            initial_temp=3000.0,
+            cooling_rate=0.99,
+            iter_per_temp=75,
+            max_runtime=240   # seconds per run
+        )
+
+CHANGE TO:
+
+PSSAI_PMS_j10_m3_r0_1
+Best: 2697 | Avg: 2697 ± 0.0
+PSSAI_PMS_j10_m3_r0_2
+Best: 6050 | Avg: 6050 ± 0.0
+
+
+PSSAI_PMS_j10_m3_r1_5
+Best: 3380 | Avg: 3380 ± 0.0
+
+PSSAI_PMS_j10_m3_r2_3
+Best: 4009 | Avg: 4009 ± 0.0
+PSSAI_PMS_j10_m4_r1_4
+Best: 14602 | Avg: 14602 ± 0.0
+
+PSSAI_PMS_j50_m1_r5_3
+Best: 39602 | Avg: 39998.6 ± 278.6
+
+PSSAI_PMS_j50_m2_r8_1
+Best: 18565 | Avg: 19130.6 ± 537.26
+
+PSSAI_PMS_j50_m5_r5_5
+Best: 21830 | Avg: 23408.8 ± 1471.43
+
+PSSAI_PMS_j50_m5_r8_2
+Best: 11566 | Avg: 11839.6 ± 257.87
+
+PSSAI_PMS_j50_m5_r8_4
+Best: 24089 | Avg: 25889.2 ± 1398.55
+
+PSSAI_PMS_j100_m1_r13_2
+Best: 102981 | Avg: 146163.4 ± 27652.56
+
+PSSAI_PMS_j100_m2_r10_5
+Best: 50598 | Avg: 52956.6 ± 2822.63
+
+PSSAI_PMS_j100_m6_r15_1
+failed
+
+
+
+PSSAI_PMS_j500_m3_r33_2
+
+PSSAI_PMS_j500_m5_r31_5
+
+
+PSSAI_PMS_j500_m7_r14_3
+
+
+PSSAI_PMS_j500_m7_r25_4
+
+
+PSSAI_PMS_j500_m8_r29_1
+
+
+
 
 
 
@@ -97,3 +248,14 @@ Repeatedly pick schedulable front jobs
 Compute start from machine readiness + predecessor completion
 Detect no-progress as infeasible
 If you want, I can rewrite decode() that way.
+
+
+
+--------------------------------------
+PRESENTATION
+
+Description of your algorithm
+Experiments/Selection of parameters
++Results for benchmark examples. Average results, best result and standard deviation over 5 runs should be reported for each instance.
++Conclusions/lessons learned
++Instructions how to run your program

@@ -12,21 +12,26 @@ from pms_simulated_annealing import run_multiple_times
 
 # List of instances to run (you can add more)
 INSTANCES = [
-    "PSSAI_PMS_j10_m3_r0_1.json",
-    "PSSAI_PMS_j10_m3_r0_2.json",
-    "PSSAI_PMS_j10_m3_r1_5.json",
-    "PSSAI_PMS_j10_m3_r2_3.json",
-    "PSSAI_PMS_j10_m4_r1_4.json",
-    "PSSAI_PMS_j50_m1_r5_3.json",
-    "PSSAI_PMS_j50_m2_r8_1.json",
-    "PSSAI_PMS_j50_m5_r5_5.json",
-    "PSSAI_PMS_j50_m5_r8_2.json",
-    "PSSAI_PMS_j50_m5_r8_4.json",
-    "PSSAI_PMS_j100_m1_r13_2.json",
-    "PSSAI_PMS_j100_m2_r10_5.json",
+    # "PSSAI_PMS_j10_m3_r0_1.json",
+    # "PSSAI_PMS_j10_m3_r0_2.json",
+    # "PSSAI_PMS_j10_m3_r1_5.json",
+    # "PSSAI_PMS_j10_m3_r2_3.json",
+    # "PSSAI_PMS_j10_m4_r1_4.json",
+    # "PSSAI_PMS_j50_m1_r5_3.json",
+    # "PSSAI_PMS_j50_m2_r8_1.json",
+    # "PSSAI_PMS_j50_m5_r5_5.json",
+    # "PSSAI_PMS_j50_m5_r8_2.json",
+    # "PSSAI_PMS_j50_m5_r8_4.json",
+    # "PSSAI_PMS_j100_m1_r13_2.json",
+    # "PSSAI_PMS_j100_m2_r10_5.json",
     "PSSAI_PMS_j100_m6_r15_1.json",
     "PSSAI_PMS_j100_m7_r10_3.json",
     "PSSAI_PMS_j100_m7_r18_4.json",
+    # "PSSAI_PMS_j500_m3_r33_2.json",
+    # "PSSAI_PMS_j500_m5_r31_5.json",
+    # "PSSAI_PMS_j500_m7_r14_3.json",
+    # "PSSAI_PMS_j500_m7_r25_4.json",
+    # "PSSAI_PMS_j500_m8_r29_1.json"
 ]
 
 def main():
@@ -46,10 +51,10 @@ def main():
         summary = run_multiple_times(
             full_path,
             n_runs=5,
-            initial_temp=8000.0,
-            cooling_rate=0.993,
-            iter_per_temp=500,
-            max_runtime=45   # seconds per run
+            initial_temp=3000.0,
+            cooling_rate=0.99,
+            iter_per_temp=75,
+            max_runtime=120   # seconds per run
         )
         
         all_results[inst_name] = summary
