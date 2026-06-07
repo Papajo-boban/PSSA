@@ -22,19 +22,6 @@ class SimulatedAnnealing:
         self.iter_per_temp = kwargs.get("iter_per_temp", 300)
         self.max_runtime = kwargs.get("max_runtime", 60)
 
-    def random_solution(self) -> List[List[int]]:
-        """Generate random per-machine job sequences."""
-        job_sequences_by_machine = [[] for _ in range(self.instance.n_machines + 1)]
-        jobs = list(range(self.instance.n_jobs))
-        random.shuffle(jobs)
-
-        for job_id in jobs:
-            eligible_machines = list(self.instance.eligible[job_id])
-            machine_id = random.choice(eligible_machines)
-            job_sequences_by_machine[machine_id].append(job_id)
-
-        return job_sequences_by_machine
-
     def construct_feasible_solution(self, max_restarts: int = 300, candidate_pool_size: int = 3) -> List[List[int]]:
         """Construct a feasible schedule incrementally."""
         for _ in range(max_restarts):
@@ -57,7 +44,7 @@ class SimulatedAnnealing:
                     if any(predecessor_job_id not in scheduled_jobs for predecessor_job_id in predecessor_indices):
                         continue
 
-                    eligible_machines = list(self.instance.eligible[job_id])
+                    eligible_machines = self.instance.eligible[job_id]
                     random.shuffle(eligible_machines)
 
                     for machine_id in eligible_machines:
@@ -155,7 +142,10 @@ class SimulatedAnnealing:
         return neighbor
 
     def run(self) -> Dict:
+        print(f"[{timestamp()}] initializing feasible solution...", end=" ")
+        init_start_time = time.time()
         current = self.construct_feasible_solution()
+        print(f"done in {time.time() - init_start_time:.1f}s [{timestamp()}]")
         current_obj, current_tard, current_makespan, _, _ = self.instance.decode(current)
 
         best = copy.deepcopy(current)
@@ -208,25 +198,38 @@ class SimulatedAnnealing:
 def run_multiple_times(instance_path: str, n_runs: int = 5, **sa_params):
     instance = PMSInstance(instance_path)
     results = []
+    failed_runs = 0
 
     print(f"Running SA on {instance_path.split('/')[-1]} ({n_runs} runs)...")
 
     for run in range(1, n_runs + 1):
         print(f"  Run {run}/{n_runs}...", end=" ")
-        sa = SimulatedAnnealing(instance, **sa_params)
-        result = sa.run()
-        results.append(result)
-        print(f"Obj = {result['objective']}")
+        try:
+            sa = SimulatedAnnealing(instance, **sa_params)
+            result = sa.run()
+            results.append(result)
+            print(f"Obj = {result['objective']}")
+        except RuntimeError as exc:
+            failed_runs += 1
+            print(f"failed ({exc})")
 
     objs = [r["objective"] for r in results]
 
     summary = {
         "instance": instance_path.split("/")[-1],
-        "best_objective": min(objs),
-        "avg_objective": round(statistics.mean(objs), 1),
-        "std_objective": round(statistics.stdev(objs), 2) if n_runs > 1 else 0,
+        "successful_runs": len(results),
+        "failed_runs": failed_runs,
+        "best_objective": min(objs) if objs else None,
+        "avg_objective": round(statistics.mean(objs), 1) if objs else None,
+        "std_objective": round(statistics.stdev(objs), 2) if len(objs) > 1 else 0,
         "results": results,
     }
 
-    print(f"Best: {summary['best_objective']} | Avg: {summary['avg_objective']} +/- {summary['std_objective']}")
+    if objs:
+        print(
+            f"Best: {summary['best_objective']} | Avg: {summary['avg_objective']} "
+            f"+/- {summary['std_objective']} | Failed runs: {failed_runs}"
+        )
+    else:
+        print(f"No successful runs | Failed runs: {failed_runs}")
     return summary

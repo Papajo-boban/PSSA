@@ -17,10 +17,12 @@ TODO:
 +rerun 10j and 50j instances
 +verify feasibility
 +adjust and document hyperparam time for each run
-make comprehensible graph of results
-improve instructions how to run code
-try running 500j instances while running/eating
-experiment with selection of parameters
++make comprehensible graph of results
++improve instructions how to run code
++try running 500j instances while running/eating
+-experiment with selection of parameters
++describe how each file works in pseudocode
+give an initial walk through the experimentation of choosing parameters / adjusting code
 
 ------------------------------
 DOCUMENTATION:
@@ -259,3 +261,133 @@ Experiments/Selection of parameters
 +Results for benchmark examples. Average results, best result and standard deviation over 5 runs should be reported for each instance.
 +Conclusions/lessons learned
 +Instructions how to run your program
+
+
+
+
+-----------------------------
+ALGORITHM DESCRIPTION
+
+run_experiments.py
+
+give json instances to run
+select hyperparameters e.g. n_runs, initial_temp, cooling_rate, iter_per_temp
+
+calls SA from pms_simulated_annealing.py
+
+collects and saves results in experiment_summary.json
+
+
+pms_instance_simulated_annealing.py
+
+creates class Simulated Annealing:
+
+tries to:
+ 1. construct initial feasible solution incrementally (max restars = 300 times)
+ 2. 
+
+
+with initial random feasible solution:
+- generates a list of job sequences by machines by:
+    - taking the remaining unscheduled jobs
+    - shuffling the list
+    - going through each job(candidate) checking:
+        - that all its predecessors are scheduled
+        - going through eligible machines
+            - set up time based on previous job_setup time or its own
+            - picking the latest predecessor finish time
+            - choosing candidate start based on its own setup time or latest predecessor finish time
+            - checking for resource conflict()
+
+            if passes resource conflict check, assign candidate's start/finish time and schedule it
+    - once it has list of candidates, it sorts them based on the attractiveness (finish time, start time, job_id, machine_id)
+    - chooses randomly one of the best options
+    - schedules it
+    - with a certain probability it 
+        1. 
+- decodes in pms_instance.py
+- makes a copy of the current best result
+- starts annealing
+- if temp is high enough
+- creates a neighbor:
+    1. inserts a job from one machine to another
+    2. moves a job from one position to another in a machine
+    3. swaps positions of two jobs on the same machine
+- decodes in pms_instance.py
+- applies cooling rate
+
+
+pms_instance.py
+
+grabs data from json instance
+decodes given job sequence by machine list with constraints:
+if job sequence by machine list satisfies, it returns true along with makespan, tardiness and total cost / objective
+
+
+ 
+
+
+//
+CORRECTED ALG DESCRIPTION:
+Algorithm Description
+run_experiments.py
+Selects the benchmark JSON instances to solve.
+Sets the SA hyperparameters such as n_runs, initial_temp, cooling_rate, iter_per_temp, and max_runtime.
+Calls run_multiple_times() from pms_simulated_annealing.py.
+Collects the results of all runs.
+Saves the best solution for each instance and writes the summary to experiment_summary.json.
+pms_simulated_annealing.py
+Defines the SimulatedAnnealing class.
+First constructs an initial feasible solution with construct_feasible_solution().
+The solution representation is job_sequences_by_machine, i.e. one ordered list of jobs per machine.
+construct_feasible_solution()
+Builds a feasible schedule incrementally.
+Starts with all jobs unscheduled.
+Repeatedly considers candidate jobs whose predecessors are already scheduled.
+For each candidate job, checks all eligible machines.
+For each (job, machine) pair, computes:setup-adjusted start time
+latest predecessor finish time
+resulting candidate start and finish times
+whether the placement causes a resource conflict
+
+Stores all feasible candidate moves.
+Sorts them by attractiveness:earlier finish time
+earlier start time
+smaller job id
+smaller machine id
+
+Randomly selects one from the best few candidates.
+Schedules that job on that machine.
+Repeats until all jobs are scheduled or construction fails.
+run()
+Uses the feasible constructed solution as the initial SA state.
+Evaluates it with decode() from pms_instance.py.
+Stores it as the current and best solution.
+Starts annealing.
+While temperature is above the minimum and runtime limit is not exceeded:generates a neighbor
+evaluates the neighbor with decode()
+accepts or rejects it according to the SA acceptance rule
+updates the best solution if improved
+cools the temperature
+
+get_neighbor()
+Chooses one move type probabilistically:move a job from one machine to another eligible machine
+move a job to another position within the same machine
+swap two jobs on the same machine
+
+Produces a neighboring job_sequences_by_machine solution.
+pms_instance.py
+Loads the JSON instance data.
+decode() simulates the schedule represented by job_sequences_by_machine.
+Enforces:machine eligibility
+precedence constraints
+setup times
+resource-capacity constraints
+
+Computes:start times
+finish times
+makespan
+tardiness
+total objective
+
+Returns feasibility together with the computed schedule and objective values.

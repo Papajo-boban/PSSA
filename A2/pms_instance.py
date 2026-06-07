@@ -16,8 +16,7 @@ class PMSInstance:
         self.initial_setup = [job["InitialSetupTime"] for job in data["Jobs"]]
 
         # Input IDs are 1-based.
-        self.eligible: List[Set[int]] = [set(job["EligibleMachineIds"]) for job in data["Jobs"]]
-        self.precedences: List[Set[int]] = [set(job["PrecedenceJobIds"]) for job in data["Jobs"]]
+        self.eligible: List[List[int]] = [(job["EligibleMachineIds"]) for job in data["Jobs"]]
         self.predecessor_indices: List[List[int]] = [
             [pred_job_id - 1 for pred_job_id in job["PrecedenceJobIds"]]
             for job in data["Jobs"]
@@ -194,7 +193,3 @@ class PMSInstance:
                     return True
 
         return False
-
-    def is_feasible(self, job_sequences_by_machine: List[List[int]]) -> bool:
-        _, _, _, feasible, _ = self.decode(job_sequences_by_machine)
-        return feasible

@@ -27,18 +27,18 @@
     },
     {
       "JobId": 6,
-      "StartTime": 603,
+      "StartTime": 601,
       "MachineId": 3
     },
     {
       "JobId": 7,
-      "StartTime": 96,
-      "MachineId": 3
+      "StartTime": 215,
+      "MachineId": 1
     },
     {
       "JobId": 8,
-      "StartTime": 203,
-      "MachineId": 1
+      "StartTime": 116,
+      "MachineId": 3
     },
     {
       "JobId": 9,
@@ -47,7 +47,7 @@
     },
     {
       "JobId": 10,
-      "StartTime": 544,
+      "StartTime": 657,
       "MachineId": 1
     }
   ]
