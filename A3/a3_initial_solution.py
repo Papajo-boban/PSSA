@@ -7,6 +7,7 @@ import time
 from typing import Dict, List, Optional, Set, Tuple
 
 from pms_instance import PMSInstance
+from resource_timeline import ResourceTimeline
 
 
 @dataclass
@@ -48,6 +49,15 @@ class ScheduleEvaluation:
     overload_events: List[Dict]
 
 
+@dataclass
+class BeamNode:
+    state: ScheduleState
+    unscheduled_jobs: Set[int]
+    remaining_predecessors: List[int]
+    ready_jobs: Set[int]
+    resource_timelines: List[ResourceTimeline]
+
+
 class InitialSolutionBuilder:
     def __init__(
         self,
@@ -81,6 +91,7 @@ class InitialSolutionBuilder:
         scheduled_jobs: Set[int] = set()
         remaining_predecessors = [len(preds) for preds in self.instance.predecessor_indices]
         ready_heap: List[Tuple[Tuple[int, int, int, int, int], int]] = []
+        resource_timelines = self.instance._build_resource_timelines()
 
         for job_id, count in enumerate(remaining_predecessors):
             if count == 0:
@@ -109,13 +120,25 @@ class InitialSolutionBuilder:
                         machine_ready_time[machine_id] + self.instance.setup[job_id][machine_last_job[machine_id]],
                     )
 
-                feasible_start = self.instance.earliest_resource_feasible_start(
-                    job_id,
-                    earliest_start,
-                    scheduled_jobs,
-                    start_times,
-                    finish_times,
-                )
+                feasible_start = earliest_start
+                while True:
+                    updated_start = feasible_start
+                    for resource_id, required_amount in self.instance.job_resource_requirements[job_id]:
+                        candidate_start = resource_timelines[resource_id].earliest_feasible_start(
+                            updated_start,
+                            self.instance.processing[job_id],
+                            required_amount,
+                        )
+                        if candidate_start >= 10**9:
+                            updated_start = 10**9
+                            break
+                        updated_start = max(updated_start, candidate_start)
+                    if updated_start >= 10**9:
+                        feasible_start = 10**9
+                        break
+                    if updated_start == feasible_start:
+                        break
+                    feasible_start = updated_start
                 if feasible_start >= 10**9:
                     continue
 
@@ -141,6 +164,8 @@ class InitialSolutionBuilder:
             machine_ready_time[machine_id] = best_move.finish
             machine_last_job[machine_id] = job_id
             scheduled_jobs.add(job_id)
+            for resource_id, required_amount in self.instance.job_resource_requirements[job_id]:
+                resource_timelines[resource_id].commit(best_move.start, best_move.finish, required_amount)
 
             for successor_id in self.instance.successor_indices[job_id]:
                 remaining_predecessors[successor_id] -= 1
@@ -163,7 +188,242 @@ class InitialSolutionBuilder:
         }
 
     def build_large_instance_feasible_solution(self, deadline: Optional[float]) -> Dict:
-        return self.large_instance_repair_lns(deadline)
+        state = self._empty_state()
+        unscheduled_jobs = set(range(self.instance.n_jobs))
+        remaining_predecessors = [len(preds) for preds in self.instance.predecessor_indices]
+        ready_jobs = {job_id for job_id, count in enumerate(remaining_predecessors) if count == 0}
+        resource_timelines = self.instance._build_resource_timelines()
+        rollback_count = 0
+
+        while unscheduled_jobs:
+            if self._time_exceeded(deadline):
+                raise RuntimeError("Timed out while building a feasible initial solution.")
+
+            remaining_resource_demand = self._remaining_resource_demand(unscheduled_jobs)
+            pressured_window = self._find_windowed_resource_pressure(
+                state,
+                unscheduled_jobs,
+                resource_timelines,
+            )
+            if pressured_window is not None and rollback_count < self.max_rollbacks and state.insertion_order:
+                removed_jobs = self._rollback_resource_pressure_state(
+                    state,
+                    unscheduled_jobs,
+                    resource_id=pressured_window[0],
+                    window_start=pressured_window[1],
+                    window_end=pressured_window[2],
+                )
+                if removed_jobs:
+                    rollback_count += 1
+                    remaining_predecessors, ready_jobs = self._recompute_frontier(unscheduled_jobs, state.scheduled_jobs)
+                    resource_timelines = self._build_resource_timelines_from_state(state)
+                    continue
+
+            dead_resource = self._find_aggregate_resource_impossibility(remaining_resource_demand, resource_timelines)
+            if dead_resource is not None:
+                if rollback_count >= self.max_rollbacks or not state.insertion_order:
+                    resource_id, remaining_demand, remaining_capacity = dead_resource
+                    raise RuntimeError(
+                        "Future resource demand already exceeds capacity "
+                        f"for resource {resource_id + 1} "
+                        f"(demand={remaining_demand}, capacity={remaining_capacity})."
+                    )
+                removed_jobs = self._rollback_resource_pressure_state(
+                    state,
+                    unscheduled_jobs,
+                    resource_id=dead_resource[0],
+                    window_start=0,
+                    window_end=10**9,
+                )
+                if not removed_jobs:
+                    raise RuntimeError("Could not build a feasible initial solution.")
+                rollback_count += 1
+                remaining_predecessors, ready_jobs = self._recompute_frontier(unscheduled_jobs, state.scheduled_jobs)
+                resource_timelines = self._build_resource_timelines_from_state(state)
+                continue
+
+            ordered_ready = sorted(
+                ready_jobs,
+                key=lambda job_id: self._large_dynamic_job_priority_key(
+                    state,
+                    job_id,
+                    remaining_resource_demand,
+                    resource_timelines,
+                ),
+            )[: max(8, self.frontier_size)]
+
+            best_move: Optional[CandidateMove] = None
+            for job_id in ordered_ready:
+                move = self._best_append_candidate_with_timelines(state, resource_timelines, job_id)
+                if move is None:
+                    continue
+                if best_move is None or move.score < best_move.score:
+                    best_move = move
+
+            if best_move is None:
+                if rollback_count >= self.max_rollbacks or not state.insertion_order:
+                    blocked_diagnostics = self._blocked_job_diagnostics(ordered_ready[:5])
+                    if blocked_diagnostics:
+                        raise RuntimeError(
+                            "Could not place ready job set; blocked ready jobs="
+                            f"{blocked_diagnostics}."
+                        )
+                    blocked_label = ",".join(str(job_id + 1) for job_id in ordered_ready[:5]) or "none"
+                    raise RuntimeError(f"Could not place ready job set; blocked ready jobs={blocked_label}.")
+
+                removed_jobs = self._rollback_blocked_large_state(state, unscheduled_jobs, ordered_ready)
+                if not removed_jobs:
+                    raise RuntimeError("Could not build a feasible initial solution.")
+                rollback_count += 1
+                remaining_predecessors, ready_jobs = self._recompute_frontier(unscheduled_jobs, state.scheduled_jobs)
+                resource_timelines = self._build_resource_timelines_from_state(state)
+                continue
+
+            self._apply_candidate(state, best_move)
+            for resource_id, required_amount in self.instance.job_resource_requirements[best_move.job_id]:
+                resource_timelines[resource_id].commit(best_move.start, best_move.finish, required_amount)
+
+            unscheduled_jobs.remove(best_move.job_id)
+            ready_jobs.remove(best_move.job_id)
+            for successor_id in self.instance.successor_indices[best_move.job_id]:
+                remaining_predecessors[successor_id] -= 1
+                if remaining_predecessors[successor_id] == 0 and successor_id in unscheduled_jobs:
+                    ready_jobs.add(successor_id)
+
+        return self._finalize_large_state(state)
+
+    def _finalize_large_state(self, state: ScheduleState) -> Dict:
+        objective, tardiness, makespan, feasible, solution, _, _, _ = self.instance.decode_sequences(
+            state.machine_sequences
+        )
+        if not feasible:
+            raise RuntimeError("Constructed schedule failed final feasibility decoding.")
+
+        return {
+            "objective": objective,
+            "tardiness": tardiness,
+            "makespan": makespan,
+            "solution": solution,
+            "job_sequences_by_machine": state.machine_sequences,
+            "feasible": True,
+            "infeasibility_score": 0,
+            "violation_summary": {
+                "ineligible_jobs": 0,
+                "precedence_shortfall": 0,
+                "setup_shortfall": 0,
+                "machine_overlap": 0,
+                "resource_overload": 0,
+                "violating_jobs": 0,
+            },
+        }
+
+    def beam_search_large_instance(
+        self,
+        deadline: Optional[float],
+        beam_width: int = 4,
+        branch_limit: int = 3,
+    ) -> Dict:
+        initial_node = BeamNode(
+            state=self._empty_state(),
+            unscheduled_jobs=set(range(self.instance.n_jobs)),
+            remaining_predecessors=[len(preds) for preds in self.instance.predecessor_indices],
+            ready_jobs={
+                job_id
+                for job_id, count in enumerate(
+                    [len(preds) for preds in self.instance.predecessor_indices]
+                )
+                if count == 0
+            },
+            resource_timelines=self.instance._build_resource_timelines(),
+        )
+        beam: List[BeamNode] = [initial_node]
+        blocked_jobs_seen: List[int] = []
+
+        while beam:
+            if self._time_exceeded(deadline):
+                raise RuntimeError("Timed out while building a feasible initial solution.")
+
+            expanded_nodes: List[Tuple[Tuple[float, int, int, int], BeamNode]] = []
+            progress_made = False
+
+            for node in beam:
+                if not node.unscheduled_jobs:
+                    return self._finalize_large_state(node.state)
+
+                remaining_resource_demand = self._remaining_resource_demand(node.unscheduled_jobs)
+                dead_resource = self._find_aggregate_resource_impossibility(
+                    remaining_resource_demand,
+                    node.resource_timelines,
+                )
+                if dead_resource is not None:
+                    continue
+
+                if not node.ready_jobs:
+                    continue
+
+                critical_job_id = self._select_beam_critical_job(
+                    node.state,
+                    node.ready_jobs,
+                    remaining_resource_demand,
+                    node.resource_timelines,
+                )
+                if critical_job_id is None:
+                    continue
+
+                candidate_moves = self._append_candidates_with_timelines(
+                    node.state,
+                    node.resource_timelines,
+                    critical_job_id,
+                    branch_limit,
+                )
+                if not candidate_moves:
+                    blocked_jobs_seen.append(critical_job_id)
+                    continue
+
+                progress_made = True
+                for candidate_move in candidate_moves:
+                    child = self._clone_beam_node(node)
+                    self._apply_candidate(child.state, candidate_move)
+                    for resource_id, required_amount in self.instance.job_resource_requirements[candidate_move.job_id]:
+                        child.resource_timelines[resource_id].commit(
+                            candidate_move.start,
+                            candidate_move.finish,
+                            required_amount,
+                        )
+                    child.unscheduled_jobs.remove(candidate_move.job_id)
+                    child.ready_jobs.remove(candidate_move.job_id)
+                    for successor_id in self.instance.successor_indices[candidate_move.job_id]:
+                        child.remaining_predecessors[successor_id] -= 1
+                        if (
+                            child.remaining_predecessors[successor_id] == 0
+                            and successor_id in child.unscheduled_jobs
+                        ):
+                            child.ready_jobs.add(successor_id)
+
+                    if not child.unscheduled_jobs:
+                        return self._finalize_large_state(child.state)
+
+                    expanded_nodes.append(
+                        (
+                            self._score_beam_node(
+                                child.state,
+                                child.unscheduled_jobs,
+                                child.resource_timelines,
+                            ),
+                            child,
+                        )
+                    )
+
+            if not progress_made or not expanded_nodes:
+                blocked_label = ",".join(
+                    str(job_id + 1) for job_id in blocked_jobs_seen[-5:]
+                ) or "none"
+                raise RuntimeError(f"Could not place ready job set; blocked ready jobs={blocked_label}.")
+
+            expanded_nodes.sort(key=lambda item: item[0])
+            beam = [node for _, node in expanded_nodes[:beam_width]]
+
+        raise RuntimeError("Could not build a feasible initial solution.")
 
     def large_instance_repair_lns(
         self,
@@ -399,6 +659,36 @@ class InitialSolutionBuilder:
             insertion_order=[],
         )
 
+    def _clone_state(self, state: ScheduleState) -> ScheduleState:
+        return ScheduleState(
+            machine_sequences=[list(sequence) for sequence in state.machine_sequences],
+            machine_assignment=list(state.machine_assignment),
+            start_times=list(state.start_times),
+            finish_times=list(state.finish_times),
+            machine_ready_time=list(state.machine_ready_time),
+            previous_job_by_machine=list(state.previous_job_by_machine),
+            resource_usage=[list(intervals) for intervals in state.resource_usage],
+            scheduled_jobs=set(state.scheduled_jobs),
+            insertion_order=list(state.insertion_order),
+        )
+
+    def _clone_resource_timelines(self, resource_timelines: List[ResourceTimeline]) -> List[ResourceTimeline]:
+        cloned: List[ResourceTimeline] = []
+        for timeline in resource_timelines:
+            new_timeline = ResourceTimeline([])
+            new_timeline.segments = [list(segment) for segment in timeline.segments]
+            cloned.append(new_timeline)
+        return cloned
+
+    def _clone_beam_node(self, node: BeamNode) -> BeamNode:
+        return BeamNode(
+            state=self._clone_state(node.state),
+            unscheduled_jobs=set(node.unscheduled_jobs),
+            remaining_predecessors=list(node.remaining_predecessors),
+            ready_jobs=set(node.ready_jobs),
+            resource_timelines=self._clone_resource_timelines(node.resource_timelines),
+        )
+
     def _ranked_candidates(
         self, state: ScheduleState, ready_jobs: Set[int], diversification_level: int
     ) -> List[CandidateMove]:
@@ -414,6 +704,78 @@ class InitialSolutionBuilder:
             return []
         ranked = self._best_candidate_over_jobs(state, ordered_jobs)
         return self._diversify_candidates(ranked, diversification_level)
+
+    def _best_append_candidate_with_timelines(
+        self,
+        state: ScheduleState,
+        resource_timelines,
+        job_id: int,
+    ) -> Optional[CandidateMove]:
+        candidates = self._append_candidates_with_timelines(
+            state,
+            resource_timelines,
+            job_id,
+            limit=1,
+        )
+        return candidates[0] if candidates else None
+
+    def _append_candidates_with_timelines(
+        self,
+        state: ScheduleState,
+        resource_timelines,
+        job_id: int,
+        limit: int,
+    ) -> List[CandidateMove]:
+        predecessor_finish = self._predecessor_finish(state, job_id)
+        candidates: List[CandidateMove] = []
+
+        for machine_id in self.instance.eligible[job_id]:
+            feasible_start = max(predecessor_finish, self._earliest_machine_ready(state, job_id, machine_id))
+            while True:
+                updated_start = feasible_start
+                for resource_id, required_amount in self.instance.job_resource_requirements[job_id]:
+                    candidate_start = resource_timelines[resource_id].earliest_feasible_start(
+                        updated_start,
+                        self.instance.processing[job_id],
+                        required_amount,
+                    )
+                    if candidate_start >= 10**9:
+                        updated_start = 10**9
+                        break
+                    updated_start = max(updated_start, candidate_start)
+                if updated_start >= 10**9:
+                    feasible_start = 10**9
+                    break
+                if updated_start == feasible_start:
+                    break
+                feasible_start = updated_start
+
+            if feasible_start >= 10**9:
+                continue
+
+            finish = feasible_start + self.instance.processing[job_id]
+            tardiness_increase = max(0, finish - self.instance.due[job_id])
+            regret = self._job_machine_regret(state, job_id, resource_timelines)
+            score = (
+                1000 * tardiness_increase + finish + self.instance.resource_weights[job_id],
+                len(self.instance.eligible[job_id]),
+                -regret,
+                -len(self.instance.successor_indices[job_id]),
+                job_id,
+                machine_id,
+            )
+            candidates.append(
+                CandidateMove(
+                    score,
+                    job_id,
+                    machine_id,
+                    len(state.machine_sequences[machine_id]),
+                    feasible_start,
+                    finish,
+                )
+            )
+        candidates.sort(key=lambda move: move.score)
+        return candidates[:limit]
 
     def _construct_complete_machine_sequences(self) -> List[List[int]]:
         machine_sequences = [[] for _ in range(self.instance.n_machines + 1)]
@@ -1235,6 +1597,238 @@ class InitialSolutionBuilder:
             job_id,
         )
 
+    def _large_dynamic_job_priority_key(
+        self,
+        state: ScheduleState,
+        job_id: int,
+        remaining_resource_demand: List[int],
+        resource_timelines,
+    ) -> Tuple[float, int, int, int, int, int, int]:
+        base_key = self._dynamic_job_priority_key(state, job_id)
+        pressure = self._job_resource_pressure(job_id, remaining_resource_demand, resource_timelines)
+        predecessor_finish = self._predecessor_finish(state, job_id)
+        earliest_machine_start = min(
+            self._earliest_machine_ready(state, job_id, machine_id)
+            for machine_id in self.instance.eligible[job_id]
+        )
+        earliest_finish = max(predecessor_finish, earliest_machine_start) + self.instance.processing[job_id]
+        regret = self._job_machine_regret(state, job_id, resource_timelines)
+        return (
+            -pressure,
+            len(self.instance.eligible[job_id]),
+            -regret,
+            base_key[1],
+            -len(self.instance.successor_indices[job_id]),
+            earliest_finish,
+            job_id,
+        )
+
+    def _job_resource_pressure(
+        self,
+        job_id: int,
+        remaining_resource_demand: List[int],
+        resource_timelines,
+    ) -> float:
+        if not self.instance.job_resource_requirements[job_id]:
+            return 0.0
+
+        total_pressure = 0.0
+        duration = self.instance.processing[job_id]
+        for resource_id, required_amount in self.instance.job_resource_requirements[job_id]:
+            remaining_capacity = self._remaining_resource_capacity(resource_timelines[resource_id])
+            if remaining_capacity <= 0:
+                return float("inf")
+            remaining_demand = remaining_resource_demand[resource_id]
+            job_demand = duration * required_amount
+            total_pressure += remaining_demand / remaining_capacity
+            total_pressure += job_demand / remaining_capacity
+        return total_pressure
+
+    def _select_beam_critical_job(
+        self,
+        state: ScheduleState,
+        ready_jobs: Set[int],
+        remaining_resource_demand: List[int],
+        resource_timelines,
+    ) -> Optional[int]:
+        if not ready_jobs:
+            return None
+        return max(
+            ready_jobs,
+            key=lambda job_id: (
+                self._job_resource_pressure(job_id, remaining_resource_demand, resource_timelines),
+                self._job_machine_regret(state, job_id, resource_timelines),
+                -len(self.instance.eligible[job_id]),
+                self.instance.processing[job_id],
+                -job_id,
+            ),
+        )
+
+    def _job_machine_regret(
+        self,
+        state: ScheduleState,
+        job_id: int,
+        resource_timelines,
+    ) -> int:
+        predecessor_finish = self._predecessor_finish(state, job_id)
+        finishes: List[int] = []
+        for machine_id in self.instance.eligible[job_id]:
+            feasible_start = max(predecessor_finish, self._earliest_machine_ready(state, job_id, machine_id))
+            while True:
+                updated_start = feasible_start
+                for resource_id, required_amount in self.instance.job_resource_requirements[job_id]:
+                    candidate_start = resource_timelines[resource_id].earliest_feasible_start(
+                        updated_start,
+                        self.instance.processing[job_id],
+                        required_amount,
+                    )
+                    if candidate_start >= 10**9:
+                        updated_start = 10**9
+                        break
+                    updated_start = max(updated_start, candidate_start)
+                if updated_start >= 10**9:
+                    feasible_start = 10**9
+                    break
+                if updated_start == feasible_start:
+                    break
+                feasible_start = updated_start
+            if feasible_start < 10**9:
+                finishes.append(feasible_start + self.instance.processing[job_id])
+        if len(finishes) < 2:
+            return 10**9
+        finishes.sort()
+        return finishes[1] - finishes[0]
+
+    def _remaining_resource_demand(self, unscheduled_jobs: Set[int]) -> List[int]:
+        demand = [0] * self.instance.n_resources
+        for job_id in unscheduled_jobs:
+            duration = self.instance.processing[job_id]
+            for resource_id, required_amount in self.instance.job_resource_requirements[job_id]:
+                demand[resource_id] += duration * required_amount
+        return demand
+
+    def _remaining_resource_capacity(self, timeline) -> int:
+        return sum(
+            max(0, seg_end - seg_start) * seg_capacity
+            for seg_start, seg_end, seg_capacity in timeline.segments
+            if seg_capacity > 0 and seg_end > seg_start
+        )
+
+    def _score_beam_node(
+        self,
+        state: ScheduleState,
+        unscheduled_jobs: Set[int],
+        resource_timelines,
+    ) -> Tuple[float, int, int, int]:
+        remaining_resource_demand = self._remaining_resource_demand(unscheduled_jobs)
+        total_pressure = 0.0
+        for resource_id in range(self.instance.n_resources):
+            remaining_capacity = self._remaining_resource_capacity(resource_timelines[resource_id])
+            if remaining_capacity <= 0:
+                total_pressure += float(remaining_resource_demand[resource_id] > 0) * 10**9
+            elif remaining_resource_demand[resource_id] > 0:
+                total_pressure += remaining_resource_demand[resource_id] / remaining_capacity
+
+        pressured_window = self._find_windowed_resource_pressure(
+            state,
+            unscheduled_jobs,
+            resource_timelines,
+        )
+        overload_penalty = 0
+        if pressured_window is not None:
+            _, _, _, demand, capacity = pressured_window
+            overload_penalty = max(0, demand - capacity)
+
+        projected_makespan = max((finish for finish in state.finish_times if finish >= 0), default=0)
+        return (overload_penalty, total_pressure, projected_makespan, len(unscheduled_jobs))
+
+    def _estimated_earliest_job_start(self, state: ScheduleState, job_id: int) -> int:
+        predecessor_finish = self._predecessor_finish(state, job_id)
+        earliest_machine_start = min(
+            self._earliest_machine_ready(state, job_id, machine_id)
+            for machine_id in self.instance.eligible[job_id]
+        )
+        return max(predecessor_finish, earliest_machine_start)
+
+    def _windowed_remaining_resource_demand(
+        self,
+        state: ScheduleState,
+        unscheduled_jobs: Set[int],
+        resource_timelines,
+    ) -> Dict[int, List[Tuple[int, int, int, int]]]:
+        windowed_demand: Dict[int, List[Tuple[int, int, int, int]]] = {}
+        for resource_id in range(self.instance.n_resources):
+            windows = [
+                (seg_start, seg_end, 0, max(0, seg_end - seg_start) * seg_capacity)
+                for seg_start, seg_end, seg_capacity in resource_timelines[resource_id].segments
+                if seg_capacity > 0 and seg_end > seg_start
+            ]
+            windowed_demand[resource_id] = windows
+
+        for job_id in unscheduled_jobs:
+            estimated_start = self._estimated_earliest_job_start(state, job_id)
+            estimated_finish = estimated_start + self.instance.processing[job_id]
+            for resource_id, required_amount in self.instance.job_resource_requirements[job_id]:
+                windows = windowed_demand[resource_id]
+                for idx, (seg_start, seg_end, current_demand, capacity) in enumerate(windows):
+                    overlap_start = max(seg_start, estimated_start)
+                    overlap_end = min(seg_end, estimated_finish)
+                    if overlap_start >= overlap_end:
+                        continue
+                    added_demand = (overlap_end - overlap_start) * required_amount
+                    windows[idx] = (seg_start, seg_end, current_demand + added_demand, capacity)
+        return windowed_demand
+
+    def _find_windowed_resource_pressure(
+        self,
+        state: ScheduleState,
+        unscheduled_jobs: Set[int],
+        resource_timelines,
+    ) -> Optional[Tuple[int, int, int, int, int]]:
+        worst_window: Optional[Tuple[int, int, int, int, int]] = None
+        windowed_demand = self._windowed_remaining_resource_demand(state, unscheduled_jobs, resource_timelines)
+        for resource_id, windows in windowed_demand.items():
+            for window_start, window_end, demand, capacity in windows:
+                if demand <= capacity:
+                    continue
+                overload = demand - capacity
+                if worst_window is None or overload > (worst_window[3] - worst_window[4]):
+                    worst_window = (resource_id, window_start, window_end, demand, capacity)
+        return worst_window
+
+    def _find_aggregate_resource_impossibility(
+        self,
+        remaining_resource_demand: List[int],
+        resource_timelines,
+    ) -> Optional[Tuple[int, int, int]]:
+        for resource_id in range(self.instance.n_resources):
+            remaining_capacity = self._remaining_resource_capacity(resource_timelines[resource_id])
+            remaining_demand = remaining_resource_demand[resource_id]
+            if remaining_demand > remaining_capacity:
+                return resource_id, remaining_demand, remaining_capacity
+        return None
+
+    def _blocked_job_diagnostics(self, blocked_job_ids: List[int]) -> str:
+        labels: List[str] = []
+        for job_id in blocked_job_ids:
+            if self._job_is_individually_placeable(job_id):
+                labels.append(str(job_id + 1))
+            else:
+                labels.append(f"{job_id + 1}(!solo)")
+        return ",".join(labels)
+
+    def _job_is_individually_placeable(self, job_id: int) -> bool:
+        if not self.instance.eligible[job_id]:
+            return False
+        duration = self.instance.processing[job_id]
+        for resource_id, required_amount in self.instance.job_resource_requirements[job_id]:
+            if not any(
+                capacity >= required_amount and (period_end - period_start) >= duration
+                for period_start, period_end, capacity in self.instance.resource_periods[resource_id]
+            ):
+                return False
+        return True
+
     def _predecessor_finish(self, state: ScheduleState, job_id: int) -> int:
         return max(
             (state.finish_times[pred_id] for pred_id in self.instance.predecessor_indices[job_id]),
@@ -1480,6 +2074,24 @@ class InitialSolutionBuilder:
 
     def _remove_jobs(self, state: ScheduleState, unscheduled_jobs: Set[int], removed_jobs: List[int]) -> None:
         removed_set = self._expand_removed_jobs_with_scheduled_successors(state, set(removed_jobs))
+        impacted_machines = {
+            state.machine_assignment[job_id]
+            for job_id in removed_set
+            if state.machine_assignment[job_id] != 0
+        }
+
+        # Keep surviving partial sequences as machine prefixes. Removing jobs only from the
+        # middle of a machine sequence can leave a cross-machine deadlock during partial rebuild.
+        for machine_id in impacted_machines:
+            sequence = state.machine_sequences[machine_id]
+            first_removed_idx = next(
+                (idx for idx, scheduled_job_id in enumerate(sequence) if scheduled_job_id in removed_set),
+                None,
+            )
+            if first_removed_idx is None:
+                continue
+            removed_set.update(sequence[first_removed_idx:])
+
         for job_id in removed_set:
             unscheduled_jobs.add(job_id)
             machine_id = state.machine_assignment[job_id]
@@ -1532,6 +2144,182 @@ class InitialSolutionBuilder:
             if missing == 0:
                 ready_jobs.add(job_id)
         return remaining_predecessors, ready_jobs
+
+    def _rollback_recent_large_state(
+        self,
+        state: ScheduleState,
+        unscheduled_jobs: Set[int],
+    ) -> List[int]:
+        if not state.insertion_order:
+            return []
+        remove_count = min(len(state.insertion_order), max(self.rollback_size, self.frontier_size // 2))
+        removed_jobs = list(reversed(state.insertion_order[-remove_count:]))
+        self._remove_jobs(state, unscheduled_jobs, removed_jobs)
+        return removed_jobs
+
+    def _rollback_blocked_large_state(
+        self,
+        state: ScheduleState,
+        unscheduled_jobs: Set[int],
+        blocked_ready_jobs: List[int],
+    ) -> List[int]:
+        if not state.insertion_order:
+            return []
+
+        removal_candidates: List[int] = []
+        seen: Set[int] = set()
+        target_size = min(len(state.insertion_order), max(self.rollback_size * 2, self.frontier_size))
+
+        for blocked_job_id in blocked_ready_jobs[: min(5, len(blocked_ready_jobs))]:
+            conflict_jobs = self._conflict_jobs_for_blocked_job(state, blocked_job_id)
+            for scheduled_job_id in conflict_jobs:
+                if scheduled_job_id not in seen:
+                    seen.add(scheduled_job_id)
+                    removal_candidates.append(scheduled_job_id)
+                if len(removal_candidates) >= target_size:
+                    break
+            if len(removal_candidates) >= target_size:
+                break
+
+            for machine_id in self.instance.eligible[blocked_job_id]:
+                for scheduled_job_id in reversed(state.machine_sequences[machine_id]):
+                    if scheduled_job_id not in seen:
+                        seen.add(scheduled_job_id)
+                        removal_candidates.append(scheduled_job_id)
+                    if len(removal_candidates) >= target_size:
+                        break
+                if len(removal_candidates) >= target_size:
+                    break
+
+            if len(removal_candidates) < target_size:
+                for predecessor_id in self.instance.predecessor_indices[blocked_job_id]:
+                    if predecessor_id in state.scheduled_jobs and predecessor_id not in seen:
+                        seen.add(predecessor_id)
+                        removal_candidates.append(predecessor_id)
+                    if len(removal_candidates) >= target_size:
+                        break
+
+            if len(removal_candidates) < target_size:
+                for resource_id, _ in self.instance.job_resource_requirements[blocked_job_id]:
+                    relevant_jobs = [
+                        job_id
+                        for job_id in reversed(state.insertion_order)
+                        if job_id not in seen
+                        and any(req_resource_id == resource_id for req_resource_id, _ in self.instance.job_resource_requirements[job_id])
+                    ]
+                    for scheduled_job_id in relevant_jobs[: max(2, self.rollback_size // 2)]:
+                        seen.add(scheduled_job_id)
+                        removal_candidates.append(scheduled_job_id)
+                        if len(removal_candidates) >= target_size:
+                            break
+                    if len(removal_candidates) >= target_size:
+                        break
+
+            if len(removal_candidates) >= target_size:
+                break
+
+        for scheduled_job_id in reversed(state.insertion_order):
+            if len(removal_candidates) >= target_size:
+                break
+            if scheduled_job_id not in seen:
+                seen.add(scheduled_job_id)
+                removal_candidates.append(scheduled_job_id)
+
+        if not removal_candidates:
+            return []
+
+        self._remove_jobs(state, unscheduled_jobs, removal_candidates[:target_size])
+        return removal_candidates[:target_size]
+
+    def _rollback_resource_pressure_state(
+        self,
+        state: ScheduleState,
+        unscheduled_jobs: Set[int],
+        resource_id: int,
+        window_start: int,
+        window_end: int,
+    ) -> List[int]:
+        if not state.insertion_order:
+            return []
+
+        candidates: List[int] = []
+        seen: Set[int] = set()
+        target_size = min(len(state.insertion_order), max(self.rollback_size, self.frontier_size // 2))
+
+        overlapping_usage = [
+            (used_start, used_end, required_capacity, job_id)
+            for used_start, used_end, required_capacity, job_id in state.resource_usage[resource_id]
+            if used_start < window_end and window_start < used_end
+        ]
+        if not overlapping_usage:
+            overlapping_usage = state.resource_usage[resource_id]
+
+        for _, _, required_capacity, job_id in sorted(
+            overlapping_usage,
+            key=lambda item: (
+                item[2] * max(0, min(item[1], window_end) - max(item[0], window_start)),
+                item[2],
+                item[1] - item[0],
+                item[1],
+            ),
+            reverse=True,
+        ):
+            if job_id in seen:
+                continue
+            seen.add(job_id)
+            candidates.append(job_id)
+            if len(candidates) >= target_size:
+                break
+
+        for predecessor_id in list(candidates):
+            for pred in self.instance.predecessor_indices[predecessor_id]:
+                if pred in state.scheduled_jobs and pred not in seen:
+                    seen.add(pred)
+                    candidates.append(pred)
+                if len(candidates) >= target_size:
+                    break
+            if len(candidates) >= target_size:
+                break
+
+        if not candidates:
+            return []
+
+        removed_jobs = candidates[:target_size]
+        self._remove_jobs(state, unscheduled_jobs, removed_jobs)
+        return removed_jobs
+
+    def _conflict_jobs_for_blocked_job(self, state: ScheduleState, blocked_job_id: int) -> List[int]:
+        candidate_jobs: List[int] = []
+        seen: Set[int] = set()
+
+        for resource_id, start, finish, _ in self._blocked_resource_intervals(state, blocked_job_id):
+            overlaps = [
+                (used_capacity, used_end - used_start, used_end, used_job_id)
+                for used_start, used_end, used_capacity, used_job_id in state.resource_usage[resource_id]
+                if used_job_id not in seen and used_start < finish and start < used_end
+            ]
+            overlaps.sort(reverse=True)
+            for _, _, _, used_job_id in overlaps[: max(2, self.rollback_size // 2)]:
+                seen.add(used_job_id)
+                candidate_jobs.append(used_job_id)
+
+        for predecessor_id in self.instance.predecessor_indices[blocked_job_id]:
+            if predecessor_id in state.scheduled_jobs and predecessor_id not in seen:
+                seen.add(predecessor_id)
+                candidate_jobs.append(predecessor_id)
+
+        return candidate_jobs
+
+    def _build_resource_timelines_from_state(self, state: ScheduleState):
+        resource_timelines = self.instance._build_resource_timelines()
+        for job_id in state.scheduled_jobs:
+            for resource_id, required_amount in self.instance.job_resource_requirements[job_id]:
+                resource_timelines[resource_id].commit(
+                    state.start_times[job_id],
+                    state.finish_times[job_id],
+                    required_amount,
+                )
+        return resource_timelines
 
     def _expand_removed_jobs_with_scheduled_successors(
         self,
@@ -1595,6 +2383,8 @@ def initial_feasible_solution(instance: PMSInstance, **kwargs) -> Dict:
     deadline = time.time() + total_time_limit_s if total_time_limit_s is not None else None
 
     if fast_large_instance_mode and instance.n_jobs >= 500:
+        beam_width = kwargs.get("beam_width", 4)
+        beam_branch_limit = kwargs.get("beam_branch_limit", 3)
         builder = InitialSolutionBuilder(
             instance,
             frontier_size=kwargs.get("frontier_size", 8),
@@ -1603,10 +2393,30 @@ def initial_feasible_solution(instance: PMSInstance, **kwargs) -> Dict:
             random_seed=base_seed,
         )
         try:
-            return builder.large_instance_repair_lns(deadline)
+            return builder.build_large_instance_feasible_solution(deadline)
         except RuntimeError as exc:
             last_error = exc
-            diagnostic_messages.append(f"large-repair-lns failed: {exc}")
+            diagnostic_messages.append(f"large-decode failed: {exc}")
+
+        if deadline is None or time.time() < deadline:
+            builder = InitialSolutionBuilder(
+                instance,
+                frontier_size=kwargs.get("frontier_size", 8),
+                rollback_size=kwargs.get("rollback_size", 4),
+                max_rollbacks=kwargs.get("max_rollbacks", 40),
+                random_seed=base_seed,
+            )
+            try:
+                return builder.beam_search_large_instance(
+                    deadline,
+                    beam_width=beam_width,
+                    branch_limit=beam_branch_limit,
+                )
+            except RuntimeError as exc:
+                last_error = exc
+                diagnostic_messages.append(
+                    f"beam-search[width={beam_width},branch_limit={beam_branch_limit}] failed: {exc}"
+                )
 
         fast_stages = [
             {"max_restarts": 60, "candidate_pool_size": 2, "ready_job_limit": 8},

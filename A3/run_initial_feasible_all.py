@@ -1,10 +1,89 @@
 import argparse
+from concurrent.futures import ProcessPoolExecutor, as_completed
 import json
 import time
 from pathlib import Path
+from typing import Dict, List
 
 from a3_initial_solution import initial_feasible_solution
 from pms_instance import PMSInstance
+
+
+def _run_instance(task: Dict) -> Dict:
+    instance_path = Path(task["instance_path"])
+    output_dir = Path(task["output_dir"])
+    frontier_size = task["frontier_size"]
+    rollback_size = task["rollback_size"]
+    max_rollbacks = task["max_rollbacks"]
+    time_limit_small = task["time_limit_small"]
+    time_limit_large = task["time_limit_large"]
+    disable_a2_fallback = task["disable_a2_fallback"]
+
+    started_at = time.time()
+    try:
+        instance = PMSInstance(str(instance_path))
+        is_large_instance = instance.n_jobs >= 500
+        raw_time_limit = time_limit_large if is_large_instance else time_limit_small
+        total_time_limit_s = None if raw_time_limit <= 0 else raw_time_limit
+        result = initial_feasible_solution(
+            instance,
+            frontier_size=frontier_size,
+            rollback_size=rollback_size,
+            max_rollbacks=max_rollbacks,
+            total_time_limit_s=total_time_limit_s,
+            allow_a2_fallback=not disable_a2_fallback,
+            fast_large_instance_mode=is_large_instance,
+            diagnostics_enabled=True,
+        )
+        output_path = output_dir / f"{instance_path.stem}.solution.json"
+        output_path.write_text(json.dumps(result["solution"], indent=2), encoding="utf-8")
+        runtime = round(time.time() - started_at, 2)
+        budget_label = "none" if total_time_limit_s is None else f"{total_time_limit_s}s"
+        return {
+            "status": "ok",
+            "instance_name": instance_path.name,
+            "runtime": runtime,
+            "budget_label": budget_label,
+            "objective": result["objective"],
+            "tardiness": result["tardiness"],
+            "makespan": result["makespan"],
+        }
+    except Exception as exc:
+        runtime = round(time.time() - started_at, 2)
+        return {
+            "status": "fail",
+            "instance_name": instance_path.name,
+            "runtime": runtime,
+            "error_type": type(exc).__name__,
+            "error": str(exc),
+        }
+
+
+def _build_task(instance_path: Path, args: argparse.Namespace) -> Dict:
+    return {
+        "instance_path": str(instance_path),
+        "output_dir": str(args.output_dir),
+        "frontier_size": args.frontier_size,
+        "rollback_size": args.rollback_size,
+        "max_rollbacks": args.max_rollbacks,
+        "time_limit_small": args.time_limit_small,
+        "time_limit_large": args.time_limit_large,
+        "disable_a2_fallback": args.disable_a2_fallback,
+    }
+
+
+def _print_result(result: Dict) -> None:
+    if result["status"] == "ok":
+        print(
+            f"[OK] {result['instance_name']} | runtime={result['runtime']}s budget={result['budget_label']} "
+            f"objective={result['objective']} tardiness={result['tardiness']} makespan={result['makespan']}"
+        )
+        return
+
+    print(
+        f"[FAIL] {result['instance_name']} | runtime={result['runtime']}s "
+        f"{result['error_type']}: {result['error']}"
+    )
 
 
 def main() -> int:
@@ -24,6 +103,12 @@ def main() -> int:
     parser.add_argument("--frontier-size", type=int, default=12)
     parser.add_argument("--rollback-size", type=int, default=8)
     parser.add_argument("--max-rollbacks", type=int, default=200)
+    parser.add_argument(
+        "--workers",
+        type=int,
+        default=1,
+        help="Number of instances to solve in parallel. Use 1 for serial execution.",
+    )
     parser.add_argument("--limit", type=int, default=None)
     parser.add_argument(
         "--time-limit-small",
@@ -55,38 +140,29 @@ def main() -> int:
     args.output_dir.mkdir(parents=True, exist_ok=True)
     successes = 0
     failures = 0
-
+    tasks: List[Dict] = []
     for instance_path in instance_paths:
         print(f"[RUN] {instance_path.name}")
-        started_at = time.time()
-        try:
-            instance = PMSInstance(str(instance_path))
-            is_large_instance = instance.n_jobs >= 500
-            raw_time_limit = args.time_limit_large if is_large_instance else args.time_limit_small
-            total_time_limit_s = None if raw_time_limit <= 0 else raw_time_limit
-            result = initial_feasible_solution(
-                instance,
-                frontier_size=args.frontier_size,
-                rollback_size=args.rollback_size,
-                max_rollbacks=args.max_rollbacks,
-                total_time_limit_s=total_time_limit_s,
-                allow_a2_fallback=not args.disable_a2_fallback,
-                fast_large_instance_mode=is_large_instance,
-                diagnostics_enabled=True,
-            )
-            output_path = args.output_dir / f"{instance_path.stem}.solution.json"
-            output_path.write_text(json.dumps(result["solution"], indent=2), encoding="utf-8")
-            runtime = round(time.time() - started_at, 2)
-            budget_label = "none" if total_time_limit_s is None else f"{total_time_limit_s}s"
-            print(
-                f"[OK] {instance_path.name} | runtime={runtime}s budget={budget_label} objective={result['objective']} "
-                f"tardiness={result['tardiness']} makespan={result['makespan']}"
-            )
-            successes += 1
-        except Exception as exc:
-            runtime = round(time.time() - started_at, 2)
-            print(f"[FAIL] {instance_path.name} | runtime={runtime}s {type(exc).__name__}: {exc}")
-            failures += 1
+        tasks.append(_build_task(instance_path, args))
+
+    if args.workers <= 1:
+        for task in tasks:
+            result = _run_instance(task)
+            _print_result(result)
+            if result["status"] == "ok":
+                successes += 1
+            else:
+                failures += 1
+    else:
+        with ProcessPoolExecutor(max_workers=args.workers) as executor:
+            futures = [executor.submit(_run_instance, task) for task in tasks]
+            for future in as_completed(futures):
+                result = future.result()
+                _print_result(result)
+                if result["status"] == "ok":
+                    successes += 1
+                else:
+                    failures += 1
 
     print()
     print(f"Summary: successes={successes}, failures={failures}, total={len(instance_paths)}")
